@@ -37,14 +37,14 @@ export const DefaultLayoutConfig: ILayout = {
     menuIcon: 'svg',
   },
   content: {
-    width: 'fixed', // Set fixed|fluid to change width
+    width: 'fluid', // Set fixed|fluid to change width
     layout: 'default',
   },
   toolbar: {
-    display: true, // Display toolbar
+    display: false, // Display toolbar
     width: 'fluid', // Set fixed|fluid to change width type,
     fixed: {
-      desktop: true,
+      desktop: false,
       tabletAndMobileMode: true,
     },
     layout: 'toolbar1',

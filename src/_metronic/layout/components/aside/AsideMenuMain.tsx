@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-no-target-blank */
-import React from 'react'
-import {useIntl} from 'react-intl'
-import {KTSVG} from '../../../helpers'
-import {AsideMenuItemWithSub} from './AsideMenuItemWithSub'
-import {AsideMenuItem} from './AsideMenuItem'
+import React from 'react';
+import {useIntl} from 'react-intl';
+import {KTSVG} from '../../../helpers';
+import {AsideMenuItemWithSub} from './AsideMenuItemWithSub';
+import {AsideMenuItem} from './AsideMenuItem';
 
 export function AsideMenuMain() {
-  const intl = useIntl()
+  const intl = useIntl();
 
   return (
     <>
@@ -22,6 +22,17 @@ export function AsideMenuMain() {
         title='Layout Builder'
         fontIcon='bi-layers'
       />
+
+      <AsideMenuItemWithSub
+        to='/admin'
+        title='Quản trị công dân'
+        icon='/media/icons/duotune/communication/com006.svg'
+        fontIcon='bi-person'
+      >
+        <AsideMenuItem to='/admin/users' title='Công dân' hasBullet={true} />
+        <AsideMenuItem to='/admin/business' title='Doanh nghiệp' hasBullet={true} />
+      </AsideMenuItemWithSub>
+
       <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Crafted</span>
@@ -124,5 +135,5 @@ export function AsideMenuMain() {
         </a>
       </div>
     </>
-  )
+  );
 }

@@ -15,9 +15,9 @@ const Topbar: FC = () => {
   return (
     <div className='d-flex align-items-stretch flex-shrink-0'>
       {/* Search */}
-      <div className={clsx('d-flex align-items-stretch', toolbarButtonMarginClass)}>
+      {/* <div className={clsx('d-flex align-items-stretch', toolbarButtonMarginClass)}>
         <Search />
-      </div>
+      </div> */}
       {/* Activities */}
       <div className={clsx('d-flex align-items-center', toolbarButtonMarginClass)}>
         {/* begin::Drawer toggle */}

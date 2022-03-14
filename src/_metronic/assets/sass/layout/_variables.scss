@@ -3,8 +3,8 @@
 //
 
 // Root font Sizes
-$root-font-size:                                    13px; // Root font size for desktop mode
-$root-font-size-lg:                             	13px; // Root font size for tablet mode
+$root-font-size:                                    14px; // Root font size for desktop mode
+$root-font-size-lg:                             	14px; // Root font size for tablet mode
 $root-font-size-md:                             	12px; // Root font size for mobile mode
 
 // Page bg
@@ -15,8 +15,8 @@ $content-border-radius:								1.5rem !default;
 
 // Content Spacing
 $content-spacing: (
-	desktop: 30px, // Padding for desktop mode
-	tablet-and-mobile: 15px // Padding for tablet and mobile modes
+	desktop: 10px, // Padding for desktop mode
+	tablet-and-mobile: 5px // Padding for tablet and mobile modes
 ) !default;
 
 // Header

@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {useState} from 'react'
-import {useDispatch} from 'react-redux'
-import * as Yup from 'yup'
-import clsx from 'clsx'
-import {Link} from 'react-router-dom'
-import {useFormik} from 'formik'
-import * as auth from '../redux/AuthRedux'
-import {login} from '../redux/AuthCRUD'
-import {toAbsoluteUrl} from '../../../../_metronic/helpers'
+import {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import * as Yup from 'yup';
+import clsx from 'clsx';
+import {Link} from 'react-router-dom';
+import {useFormik} from 'formik';
+import * as auth from '../redux/AuthRedux';
+import {login} from '../redux/AuthCRUD';
+import {toAbsoluteUrl} from '../../../../_metronic/helpers';
 
 const loginSchema = Yup.object().shape({
   userName: Yup.string()
@@ -18,12 +18,12 @@ const loginSchema = Yup.object().shape({
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
     .required('Password is required'),
-})
+});
 
 const initialValues = {
   userName: 'root.admin',
   password: 'Tandan@123',
-}
+};
 
 /*
   Formik+YUP+Typescript:
@@ -32,27 +32,27 @@ const initialValues = {
 */
 
 export function Login() {
-  const [loading, setLoading] = useState(false)
-  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
     onSubmit: (values, {setStatus, setSubmitting}) => {
-      setLoading(true)
+      setLoading(true);
       setTimeout(() => {
         login(values.userName, values.password)
           .then(({data: {token}}) => {
-            setLoading(false)
-            dispatch(auth.actions.login(token))
+            setLoading(false);
+            dispatch(auth.actions.login(token));
           })
           .catch(() => {
-            setLoading(false)
-            setSubmitting(false)
-            setStatus('The login detail is incorrect')
-          })
-      }, 1000)
+            setLoading(false);
+            setSubmitting(false);
+            setStatus('Đăng nhập thất bại, vui lòng thử lại!');
+          });
+      }, 1000);
     },
-  })
+  });
 
   return (
     <form
@@ -63,11 +63,10 @@ export function Login() {
     >
       {/* begin::Heading */}
       <div className='text-center mb-10'>
-        <h1 className='text-dark mb-3'>Sign In to Metronic</h1>
         <div className='text-gray-400 fw-bold fs-4'>
-          New Here?{' '}
+          Bạn chưa có tài khoản?{' '}
           <Link to='/auth/registration' className='link-primary fw-bolder'>
-            Create an Account
+            Đăng ký
           </Link>
         </div>
       </div>
@@ -78,12 +77,7 @@ export function Login() {
           <div className='alert-text font-weight-bold'>{formik.status}</div>
         </div>
       ) : (
-        <div className='mb-10 bg-light-info p-8 rounded'>
-          <div className='text-info'>
-            Use account <strong>root.admin</strong> and password <strong>Tandan@123</strong> to
-            continue.
-          </div>
-        </div>
+        <div></div>
       )}
 
       {/* begin::Form group */}
@@ -99,7 +93,6 @@ export function Login() {
               'is-valid': formik.touched.userName && !formik.errors.userName,
             }
           )}
-          
           name='userName'
           autoComplete='off'
         />
@@ -161,20 +154,17 @@ export function Login() {
           className='btn btn-lg btn-primary w-100 mb-5'
           disabled={formik.isSubmitting || !formik.isValid}
         >
-          {!loading && <span className='indicator-label'>Continue</span>}
+          {!loading && <span className='indicator-label'>Đăng nhập</span>}
           {loading && (
             <span className='indicator-progress' style={{display: 'block'}}>
-              Please wait...
+              Đang đăng nhập...
               <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
             </span>
           )}
         </button>
 
-        {/* begin::Separator */}
-        <div className='text-center text-muted text-uppercase fw-bolder mb-5'>or</div>
-        {/* end::Separator */}
+        {/* <div className='text-center text-muted text-uppercase fw-bolder mb-5'>or</div>
 
-        {/* begin::Google link */}
         <a href='#' className='btn btn-flex flex-center btn-light btn-lg w-100 mb-5'>
           <img
             alt='Logo'
@@ -183,9 +173,7 @@ export function Login() {
           />
           Continue with Google
         </a>
-        {/* end::Google link */}
 
-        {/* begin::Google link */}
         <a href='#' className='btn btn-flex flex-center btn-light btn-lg w-100 mb-5'>
           <img
             alt='Logo'
@@ -194,9 +182,7 @@ export function Login() {
           />
           Continue with Facebook
         </a>
-        {/* end::Google link */}
 
-        {/* begin::Google link */}
         <a href='#' className='btn btn-flex flex-center btn-light btn-lg w-100'>
           <img
             alt='Logo'
@@ -204,10 +190,9 @@ export function Login() {
             className='h-20px me-3'
           />
           Continue with Apple
-        </a>
-        {/* end::Google link */}
+        </a> */}
       </div>
       {/* end::Action */}
     </form>
-  )
+  );
 }

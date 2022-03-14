@@ -1,18 +1,18 @@
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 // Redux
 // https://github.com/rt2zz/redux-persist
-import {PersistGate} from 'redux-persist/integration/react'
-import {Provider} from 'react-redux'
-import * as _redux from './setup'
-import store, {persistor} from './setup/redux/Store'
+import {PersistGate} from 'redux-persist/integration/react';
+import {Provider} from 'react-redux';
+import * as _redux from './setup';
+import store, {persistor} from './setup/redux/Store';
 // Axios
-import axios from 'axios'
-import {Chart, registerables} from 'chart.js'
-import {QueryClient, QueryClientProvider} from 'react-query'
-import {ReactQueryDevtools} from 'react-query/devtools'
+import axios from 'axios';
+import {Chart, registerables} from 'chart.js';
+import {QueryClient, QueryClientProvider} from 'react-query';
+import {ReactQueryDevtools} from 'react-query/devtools';
 
 // Apps
-import {MetronicI18nProvider} from './_metronic/i18n/Metronici18n'
+import {MetronicI18nProvider} from './_metronic/i18n/Metronici18n';
 /**
  * TIP: Replace this style import with dark styles to enable dark mode
  *
@@ -22,9 +22,13 @@ import {MetronicI18nProvider} from './_metronic/i18n/Metronici18n'
  *
  * import './_metronic/assets/css/style.rtl.css'
  **/
-import './_metronic/assets/sass/style.scss'
-import './_metronic/assets/sass/style.react.scss'
-import {AppRoutes} from './app/routing/AppRoutes'
+
+import 'antd/dist/antd.css';
+import 'react-toastify/dist/ReactToastify.css';
+
+import './_metronic/assets/sass/style.scss';
+import './_metronic/assets/sass/style.react.scss';
+import {AppRoutes} from './app/routing/AppRoutes';
 /**
  * Creates `axios-mock-adapter` instance for provided `axios` instance, add
  * basic Metronic mocks and returns it.
@@ -37,11 +41,11 @@ import {AppRoutes} from './app/routing/AppRoutes'
  *
  * @see https://github.com/axios/axios#interceptors
  */
-_redux.setupAxios(axios, store)
+_redux.setupAxios(axios, store);
 
-Chart.register(...registerables)
+Chart.register(...registerables);
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <QueryClientProvider client={queryClient}>
@@ -56,4 +60,4 @@ ReactDOM.render(
     {/* <ReactQueryDevtools initialIsOpen={false} /> */}
   </QueryClientProvider>,
   document.getElementById('root')
-)
+);
