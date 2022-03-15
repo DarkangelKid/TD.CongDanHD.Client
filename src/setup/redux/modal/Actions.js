@@ -13,3 +13,7 @@ export const setModalVisible = (data) => (dispatch) => {
 export const setDataSearch = (data) => (dispatch) => {
   dispatch(actions.setDataSearch(data));
 };
+
+export const resetData = () => (dispatch) => {
+  dispatch(actions.resetData());
+};

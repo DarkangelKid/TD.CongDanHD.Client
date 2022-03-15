@@ -15,7 +15,7 @@ import ImageUpload from 'src/app/components/ImageUpload';
 const FormItem = Form.Item;
 
 const initData = {
-  userName: '',
+  userName: 'aaaa',
   fullName: '',
   phoneNumber: null,
   email: '',
@@ -73,6 +73,9 @@ const ModalItem = (props) => {
       const res = await requestGET(`api/users/${id}`);
 
       if (res) {
+        console.log('vaoday');
+        console.log(res);
+
         form.setFieldsValue(res);
         setProvinceId(res?.provinceId ?? null);
         setDistrictId(res?.districtId ?? null);
@@ -80,6 +83,7 @@ const ModalItem = (props) => {
         if (res.dateOfBirth) {
           form.setFieldsValue({dateOfBirth: moment(res.dateOfBirth)});
         }
+        console.log(form.getFieldsValue(true));
       }
       setLoadding(false);
     };
@@ -105,7 +109,6 @@ const ModalItem = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(provinceId);
     if (provinceId) {
       const fetchData = async () => {
         const res = await requestPOST(`api/v1/areas/search`, {
@@ -193,7 +196,7 @@ const ModalItem = (props) => {
       <Modal.Body>
         <Spin spinning={loadding}>
           {!loadding && (
-            <Form form={form} layout='vertical' hideRequiredMark initialValues={initData} autoComplete='off'>
+            <Form form={form} layout='vertical' /* initialValues={initData} */ autoComplete='off'>
               <div className='row '>
                 <div className='col col-xl-4'>
                   <FormItem label='Ảnh đại diện'>

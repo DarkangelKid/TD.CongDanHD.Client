@@ -49,5 +49,8 @@ export const modalSlice = createSlice({
       const payload = action.payload;
       state.dataSearch = payload;
     },
+    resetData: (state, action) => {
+      state = initialState;
+    },
   },
 });
