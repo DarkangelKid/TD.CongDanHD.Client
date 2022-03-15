@@ -38,7 +38,6 @@ const PageHeader = (props) => {
 
   const TimKiem = () => {
     const formData = form.getFieldsValue(true);
-    console.log(formData);
     dispatch(actionsModal.setDataSearch(formData));
   };
 
@@ -80,7 +79,7 @@ const PageHeader = (props) => {
             <Form form={form} hideRequiredMark autoComplete='off'>
               <div className='row'>
                 <div className='col-xl-12 col-lg-12'>
-                  <FormItem label='Từ khoá' name='keyword'>
+                  <FormItem label='Từ khoá' name='keywordSearch'>
                     <Input placeholder='' />
                   </FormItem>
                 </div>

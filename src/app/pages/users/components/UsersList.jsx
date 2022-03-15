@@ -37,7 +37,10 @@ const UsersList = () => {
           `api/users/search`,
           _.assign(
             {
-              keyword: inputValue,
+              advancedSearch: {
+                fields: ['fullName', 'userName', 'phoneNumber', 'email'],
+                keyword: dataSearch?.keywordSearch ?? null,
+              },
               pageNumber: offset,
               pageSize: size,
               orderBy: ['fullName'],
