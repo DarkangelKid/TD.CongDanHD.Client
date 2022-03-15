@@ -13,16 +13,12 @@ import {requestPOST} from 'src/utils/baseAPI';
 import TableList from '../../../components/TableList';
 import ModalItem from './ChiTietModal';
 
-const {Text} = Typography;
-const {Search} = Input;
-
 const UsersList = () => {
   const dispatch = useDispatch();
   const modalVisible = useSelector((state) => state.modal.modalVisible);
   const dataSearch = useSelector((state) => state.modal.dataSearch);
 
   const [dataTable, setDataTable] = useState([]);
-  const [inputValue, setInputValue] = useState('');
   const [update, setUpdate] = useState(false);
   const [loading, setLoading] = useState(false);
   const [size, setSize] = useState(10);

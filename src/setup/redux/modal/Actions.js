@@ -17,3 +17,7 @@ export const setDataSearch = (data) => (dispatch) => {
 export const resetData = () => (dispatch) => {
   dispatch(actions.resetData());
 };
+
+export const setRandom = () => (dispatch) => {
+  dispatch(actions.setRandom());
+};

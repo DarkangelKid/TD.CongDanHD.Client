@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
+  random: null,
   dataModal: null,
   modalVisible: false,
   dataSearch: null,
@@ -51,6 +52,9 @@ export const modalSlice = createSlice({
     },
     resetData: (state, action) => {
       state = initialState;
+    },
+    setRandom: (state, action) => {
+      state.random = Math.random().toString(32);
     },
   },
 });
