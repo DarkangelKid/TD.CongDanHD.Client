@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import _ from 'lodash';
 
 import {Menu, Dropdown, Input, Typography} from 'antd';
 import clsx from 'clsx';
 
-import * as actionsModal from 'src/setup/redux/modal/Actions';
+import * as actions from 'src/setup/redux/modal/Actions';
 import {toAbsoluteUrl} from 'src/utils/AssetHelpers';
 import {requestPOST} from 'src/utils/baseAPI';
 
@@ -18,8 +17,6 @@ const {Search} = Input;
 
 const UsersList = () => {
   const dispatch = useDispatch();
-  const modalVisible = useSelector((state) => state.modal.modalVisible);
-  const dataSearch = useSelector((state) => state.modal.dataSearch);
 
   const [dataTable, setDataTable] = useState([]);
   const [inputValue, setInputValue] = useState('');
@@ -29,22 +26,19 @@ const UsersList = () => {
   const [count, setCount] = useState('');
   const [offset, setOffset] = useState(1);
 
+  const [modalChiTietVisible, setModalChiTietVisible] = useState(false);
+  const [dataModal, setDataModal] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await requestPOST(
-          `api/users/search`,
-          _.assign(
-            {
-              keyword: inputValue,
-              pageNumber: offset,
-              pageSize: size,
-              orderBy: ['fullName'],
-            },
-            dataSearch
-          )
-        );
+        const res = await requestPOST(`api/users/search`, {
+          keyword: inputValue,
+          pageNumber: offset,
+          pageSize: size,
+          orderBy: ['fullName'],
+        });
         setDataTable(res?.data ?? []);
         setCount(res?.totalCount ?? 0);
         setLoading(false);
@@ -53,22 +47,26 @@ const UsersList = () => {
         setLoading(false);
       }
     };
-
-    fetchData();
-
+    if (update) {
+      fetchData();
+    }
     return () => {};
-  }, [offset, size, dataSearch]);
+  }, [update]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     setUpdate(true);
     return () => {};
-  }, [offset, size, inputValue]); */
+  }, [offset, size, inputValue]);
 
   const handleButton = async (type, item) => {
     switch (type) {
       case 'chi-tiet':
-        dispatch(actionsModal.setDataModal(item));
-        dispatch(actionsModal.setModalVisible(true));
+        //handleChiTietVanBan(item);
+        //setEditVanBan(false);
+        //setDataModal(item);
+        //setModalChiTietVisible(true);
+        dispatch(actions.setDataModal(item));
+        dispatch(actions.setModalVisible(true));
 
         break;
 
@@ -193,21 +191,7 @@ const UsersList = () => {
                       {`Cấp lại mật khẩu`}
                     </a>
                   </Menu.Item>
-                  {!record.isVerified ? (
-                    <Menu.Item key={Math.random().toString(32)}>
-                      <a
-                        className='e-1 p-2 text-dark'
-                        onClick={() => {
-                          handleButton(`verifi-user`, record);
-                        }}
-                      >
-                        <i className={`fa fa-check me-2`}></i>
-                        {'Xác thực tài khoản'}
-                      </a>
-                    </Menu.Item>
-                  ) : (
-                    <></>
-                  )}
+
                   <Menu.Item key={Math.random().toString(32)}>
                     <a
                       className='e-1 p-2 text-dark'
@@ -258,7 +242,18 @@ const UsersList = () => {
           />
         </div>
       </div>
-      {modalVisible ? <ModalItem setUpdate={setUpdate} update={update} /> : <></>}
+      {modalChiTietVisible ? (
+        <ModalItem
+          dataModal={dataModal}
+          modalVisible={modalChiTietVisible}
+          setDataModal={setDataModal}
+          setUpdate={setUpdate}
+          update={update}
+          setModalVisible={setModalChiTietVisible}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 };

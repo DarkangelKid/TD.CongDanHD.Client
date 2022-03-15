@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Upload, Modal} from 'antd';
-import {getBase64} from '../../utils/basicAPI';
+import {getBase64} from 'src/utils/utils';
 
 const ImageUpload = (props) => {
   const {URL, fileList, onChange, headers, multiple, disabled} = props;
@@ -19,20 +19,10 @@ const ImageUpload = (props) => {
 
   return (
     <>
-      <Upload
-        multiple={multiple}
-        name='files'
-        accept='image/*'
-        action={`${URL}`}
-        listType='picture-card'
-        fileList={fileList}
-        onPreview={handlePreview}
-        onChange={onChange}
-        headers={headers}
-      >
+      <Upload multiple={multiple} name='files' accept='image/*' action={`${URL}`} listType='picture-card' fileList={fileList} onPreview={handlePreview} onChange={onChange} headers={headers}>
         {(!!multiple || (fileList && fileList.length < 1)) && !disabled && (
           <div>
-            <i class='fas fa-plus'></i>
+            <i className='fas fa-plus'></i>
             <div style={{marginTop: 8}}>Upload</div>
           </div>
         )}

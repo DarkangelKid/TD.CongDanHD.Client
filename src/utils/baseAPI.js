@@ -1,8 +1,11 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL;
-const GATEWAY_URL = process.env.REACT_APP_GATEWAY_URL;
-const GATEWAY_TOKEN = process.env.REACT_APP_GATEWAY_TOKEN;
+export const API_URL = process.env.REACT_APP_API_URL;
+export const GATEWAY_URL = process.env.REACT_APP_GATEWAY_URL;
+export const GATEWAY_TOKEN = process.env.REACT_APP_GATEWAY_TOKEN;
+
+export const HOST_API = `${API_URL}/api/v1/`;
+export const FILE_URL = `${process.env.REACT_APP_FILE_URL}/`;
 
 export const requestGET = async (URL) => {
   try {
