@@ -28,7 +28,7 @@ const UsersList = () => {
       try {
         setLoading(true);
         const res = await requestPOST(
-          `api/v1/areas/search`,
+          `api/v1/experiences/search`,
           _.assign(
             {
               advancedSearch: {
@@ -37,7 +37,7 @@ const UsersList = () => {
               },
               pageNumber: offset,
               pageSize: size,
-              orderBy: ['level', 'code'],
+              orderBy: ['name'],
             },
             dataSearch
           )
@@ -64,13 +64,16 @@ const UsersList = () => {
         break;
 
       case 'delete':
-        var res = await requestDELETE(`api/v1/areas/${item.id}`);
+        var res = await requestDELETE(`api/v1/experiences/${item.id}`);
         if (res) {
           toast.success('Thao tác thành công!');
           dispatch(actionsModal.setRandom());
         } else {
           toast.error('Thất bại, vui lòng thử lại!');
         }
+        break;
+      case 'XoaVanBan':
+        //handleXoaVanBan(item);
         break;
 
       default:
@@ -81,19 +84,15 @@ const UsersList = () => {
   const columns = [
     {
       title: 'Tên',
-      dataIndex: 'nameWithType',
-      key: 'nameWithType',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: 'Mã',
       dataIndex: 'code',
       key: 'code',
     },
-    {
-      title: 'Loại',
-      dataIndex: 'level',
-      key: 'level',
-    },
+
     {
       title: 'Mô tả',
       dataIndex: 'description',

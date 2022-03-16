@@ -1,46 +1,19 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {shallowEqual, useSelector, useDispatch} from 'react-redux';
 
-import {Form, Input, Select, Spin, notification, DatePicker} from 'antd';
+import {Form, Input, Select, Spin, InputNumber, DatePicker, Divider} from 'antd';
 import {Modal, Button} from 'react-bootstrap';
-import moment from 'moment';
 import {toast} from 'react-toastify';
+import moment from 'moment';
 
 import * as actionsModal from 'src/setup/redux/modal/Actions';
-
 import {requestPOST, requestGET, requestPUT, API_URL, FILE_URL} from 'src/utils/baseAPI';
-import {handleImage} from 'src/utils/utils';
 import ImageUpload from 'src/app/components/ImageUpload';
+import {handleImage} from 'src/utils/utils';
 
 const FormItem = Form.Item;
 
-const initData = {
-  userName: 'aaaa',
-  fullName: '',
-  phoneNumber: null,
-  email: '',
-  gender: null,
-  dateOfBirth: null,
-  isActive: true,
-  isVerified: false,
-  emailConfirmed: true,
-  phoneNumberConfirmed: true,
-  imageUrl: null,
-  identityNumber: null,
-  identityPlace: null,
-  identityDate: null,
-  placeOfOrigin: null,
-  placeOfDestination: null,
-  nationality: null,
-  provinceId: null,
-  districtId: null,
-  communeId: null,
-  address: null,
-  province: null,
-  district: null,
-  commune: null,
-};
-
+const {TextArea} = Input;
 const {Option} = Select;
 
 const ModalItem = (props) => {
@@ -48,17 +21,12 @@ const ModalItem = (props) => {
   const token = useSelector((state) => state.auth.accessToken);
   const dataModal = useSelector((state) => state.modal.dataModal);
   const modalVisible = useSelector((state) => state.modal.modalVisible);
-  const id = dataModal?.userName ?? null;
+  const id = dataModal?.id ?? null;
 
   const [form] = Form.useForm();
 
-  const genders = [
-    {id: 'Nam', name: 'Nam'},
-    {id: 'Nữ', name: 'Nữ'},
-    {id: 'Khác', name: 'Khác'},
-  ];
-
   const [loadding, setLoadding] = useState(false);
+  const [lstIndustries, setLstIndustries] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [communes, setCommunes] = useState([]);
@@ -66,23 +34,29 @@ const ModalItem = (props) => {
   const [provinceId, setProvinceId] = useState(null);
   const [districtId, setDistrictId] = useState(null);
   const [image, setImage] = useState([]);
+  const [logo, setLogo] = useState([]);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoadding(true);
-      const res = await requestGET(`api/users/${id}`);
+      const res = await requestGET(`api/v1/companies/${id}`);
 
-      if (res) {
-        console.log('vaoday');
-        console.log(res);
+      if (res && res.data) {
+        form.setFieldsValue(res.data);
+        setProvinceId(res.data?.provinceId ?? null);
+        setDistrictId(res.data?.districtId ?? null);
+        setImage(handleImage(res.data?.image ?? '', FILE_URL));
+        setLogo(handleImage(res.data?.logo ?? '', FILE_URL));
+        setImages(handleImage(res.data?.images ?? '', FILE_URL));
 
-        form.setFieldsValue(res);
-        setProvinceId(res?.provinceId ?? null);
-        setDistrictId(res?.districtId ?? null);
-        setImage(handleImage(res?.imageUrl ?? '', FILE_URL));
-        if (res.dateOfBirth) {
-          form.setFieldsValue({dateOfBirth: moment(res.dateOfBirth)});
+        if (res.data.dateOfIssue) {
+          form.setFieldsValue({dateOfIssue: moment(res.data.dateOfIssue)});
         }
+        if (res.data.companyIndustries && res.data.companyIndustries.length > 0) {
+          form.setFieldsValue({industries: res.data.companyIndustries.map((i) => i.industryId)});
+        }
+
         console.log(form.getFieldsValue(true));
       }
       setLoadding(false);
@@ -93,6 +67,19 @@ const ModalItem = (props) => {
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await requestPOST(`api/v1/industries/search`, {
+        pageNumber: 1,
+        pageSize: 1000,
+        orderBy: ['name'],
+      });
+      if (res && res.data) setLstIndustries(res.data);
+    };
+    fetchData();
+    return () => {};
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -153,23 +140,52 @@ const ModalItem = (props) => {
     const values = await form.validateFields();
 
     try {
+      let arrImage = [];
+      image.forEach((i) => {
+        if (i.response) {
+          arrImage.push(i.response.data[0].url);
+        } else {
+          arrImage.push(i.path);
+        }
+      });
+
+      let arrLogo = [];
+      logo.forEach((i) => {
+        if (i.response) {
+          arrLogo.push(i.response.data[0].url);
+        } else {
+          arrLogo.push(i.path);
+        }
+      });
+
+      let arrImages = [];
+      images.forEach((i) => {
+        if (i.response) {
+          arrImages.push(i.response.data[0].url);
+        } else {
+          arrImages.push(i.path);
+        }
+      });
+      form.setFieldsValue({logo: arrLogo.join('##')});
+      form.setFieldsValue({image: arrImage.join('##')});
+      form.setFieldsValue({images: arrImages.join('##')});
+
       const formData = form.getFieldsValue(true);
       if (id) {
         formData.id = id;
       }
 
-      if (image.length > 0) {
-        formData.imageUrl = image[0]?.response?.data[0]?.url ?? image[0].path;
+      /*       if (image.length > 0) {
+        formData.image = image[0]?.response?.data[0]?.url ?? image[0].path;
       } else {
-        formData.imageUrl = null;
+        formData.image = null;
       }
+ */
 
-      const res = id ? await requestPUT(`api/users/${id}`, formData) : await requestPOST(`api/users`, formData);
-      console.log(res);
+      const res = id ? await requestPUT(`api/v1/companies/${id}`, formData) : await requestPOST(`api/v1/companies`, formData);
       if (res) {
         toast.success('Cập nhật thành công!');
-        // form.resetFields();
-        props.setUpdate(!props.update);
+        dispatch(actionsModal.setRandom());
         handleCancel();
       } else {
         toast.error('Thất bại, vui lòng thử lại!');
@@ -190,91 +206,82 @@ const ModalItem = (props) => {
       onEscapeKeyDown={handleCancel}
     >
       <Modal.Header className='bg-primary px-4 py-3'>
-        <Modal.Title className='text-white'>Chi tiết người dùng</Modal.Title>
+        <Modal.Title className='text-white'>Chi tiết</Modal.Title>
         <button type='button' className='btn-close btn-close-white' aria-label='Close' onClick={handleCancel}></button>
       </Modal.Header>
       <Modal.Body>
         <Spin spinning={loadding}>
           {!loadding && (
             <Form form={form} layout='vertical' /* initialValues={initData} */ autoComplete='off'>
-              <div className='row '>
-                <div className='col col-xl-4'>
-                  <FormItem label='Ảnh đại diện'>
-                    <ImageUpload
-                      URL={`${API_URL}/api/v1/attachments`}
-                      fileList={image}
-                      onChange={(e) => setImage(e.fileList)}
-                      headers={{
-                        Authorization: `Bearer ${token}`,
-                      }}
-                    />
-                  </FormItem>
-                </div>
-                <div className='col col-xl-8'>
-                  <div className='row'>
-                    <div className='col-xl-12'>
-                      <FormItem label='Tên đăng nhập' name='userName' rules={[{required: true, message: 'Không được để trống!'}]}>
-                        <Input placeholder='Tên đăng nhập' disabled={id ? true : false} />
-                      </FormItem>
-                    </div>
-                    <div className='col-xl-12'>
-                      <FormItem label='Họ và tên' name='fullName' rules={[{required: true, message: 'Không được để trống!'}]}>
-                        <Input placeholder='Họ và tên' />
-                      </FormItem>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div className='row'>
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Số điện thoại' name='phoneNumber' rules={[{required: true, message: 'Không được để trống!'}]}>
-                    <Input placeholder='' disabled={id ? true : false} />
+                  <FormItem label='Tên công ty' name='name' rules={[{required: true, message: 'Không được để trống!'}]}>
+                    <Input placeholder='' />
                   </FormItem>
                 </div>
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Email' name='email' rules={[{required: true, message: 'Không được để trống!'}]}>
-                    <Input placeholder='' disabled={id ? true : false} />
+                  <FormItem label='Tên quốc tế' name='internationalName'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Tên viết tắt' name='shortName'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Mã số thuế' name='taxCode'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Số điện thoại' name='phoneNumber'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Email' name='email'>
+                    <Input placeholder='' />
                   </FormItem>
                 </div>
 
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Giới tính' name='gender'>
-                    <Select
-                      showSearch
-                      placeholder='Giới tính'
-                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                    >
-                      {genders.map((item) => {
-                        return (
-                          <Option key={item.id} value={item.id}>
-                            {item.name}
-                          </Option>
-                        );
-                      })}
-                    </Select>
+                  <FormItem label='Website' name='website'>
+                    <Input placeholder='' />
                   </FormItem>
                 </div>
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Ngày sinh' name='dateOfBirth'>
+                  <FormItem label='Video giới thiệu' name='profileVideo'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Fax' name='fax'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Ngày cấp' name='dateOfIssue'>
                     <DatePicker format='DD/MM/YYYY' style={{width: '100%'}} />
                   </FormItem>
                 </div>
 
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Số giấy tờ' name='identityNumber'>
+                  <FormItem label='Người đại diện' name='representative'>
                     <Input placeholder='' />
                   </FormItem>
                 </div>
+
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Ngày cấp' name='identityDateOfIssue'>
-                    <DatePicker format='DD/MM/YYYY' style={{width: '100%'}} />
-                  </FormItem>
-                </div>
-                <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Nơi cấp' name='identityPlace'>
+                  <FormItem label='Quy mô' name='companySize'>
                     <Input placeholder='' />
                   </FormItem>
                 </div>
+                <Divider orientation='left' className='first'>
+                  Địa chỉ
+                </Divider>
 
                 <div className='col-xl-4 col-lg-6'>
                   <FormItem label='Tỉnh/Thành phố' name='provinceId'>
@@ -334,7 +341,85 @@ const ModalItem = (props) => {
                 </div>
                 <div className='col-xl-4 col-lg-6'>
                   <FormItem label='Thôn/Xóm/Số nhà' name='address'>
-                    <Input placeholder='Địa chỉ' />
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Kinh độ' name='latitude'>
+                    <InputNumber placeholder='' style={{width: '100%'}} />
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Vĩ độ' name='longitude'>
+                    <InputNumber placeholder='' style={{width: '100%'}} />
+                  </FormItem>
+                </div>
+                <Divider orientation='left' className='first'></Divider>
+                <div className='col-xl-12 col-lg-12'>
+                  <FormItem label='Ngành nghề kinh doanh' name='industries'>
+                    <Select
+                      mode='multiple'
+                      allowClear
+                      showSearch
+                      placeholder='Ngành nghề kinh doanh'
+                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {lstIndustries.map((item) => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </FormItem>
+                </div>
+                <div className='col-xl-12 col-lg-12'>
+                  <FormItem label='Mô tả' name='description'>
+                    <Input.TextArea rows={4} placeholder='Mô tả' />
+                  </FormItem>
+                </div>
+              </div>
+              <div className='row '>
+                <div className='col col-xl-12'>
+                  <FormItem label='Ảnh đại diện'>
+                    <ImageUpload
+                      URL={`${API_URL}/api/v1/attachments`}
+                      fileList={image}
+                      onChange={(e) => setImage(e.fileList)}
+                      headers={{
+                        Authorization: `Bearer ${token}`,
+                      }}
+                    />
+                  </FormItem>
+                </div>
+              </div>
+              <div className='row '>
+                <div className='col col-xl-12'>
+                  <FormItem label='Logo'>
+                    <ImageUpload
+                      URL={`${API_URL}/api/v1/attachments`}
+                      fileList={logo}
+                      onChange={(e) => setLogo(e.fileList)}
+                      headers={{
+                        Authorization: `Bearer ${token}`,
+                      }}
+                    />
+                  </FormItem>
+                </div>
+              </div>
+              <div className='row '>
+                <div className='col col-xl-12'>
+                  <FormItem label='Bộ sưu tập'>
+                    <ImageUpload
+                      multiple
+                      URL={`${API_URL}/api/v1/attachments`}
+                      fileList={images}
+                      onChange={(e) => setImages(e.fileList)}
+                      headers={{
+                        Authorization: `Bearer ${token}`,
+                      }}
+                    />
                   </FormItem>
                 </div>
               </div>

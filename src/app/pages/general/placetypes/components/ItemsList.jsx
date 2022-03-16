@@ -3,12 +3,11 @@ import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import _ from 'lodash';
 
-import {Menu, Dropdown, Input, Typography} from 'antd';
-import clsx from 'clsx';
+import {Popconfirm} from 'antd';
+import {toast} from 'react-toastify';
 
 import * as actionsModal from 'src/setup/redux/modal/Actions';
-import {toAbsoluteUrl} from 'src/utils/AssetHelpers';
-import {requestPOST} from 'src/utils/baseAPI';
+import {requestPOST, requestDELETE} from 'src/utils/baseAPI';
 
 import TableList from 'src/app/components/TableList';
 import ModalItem from './ChiTietModal';
@@ -65,12 +64,14 @@ const UsersList = () => {
 
         break;
 
-      case 'SuaVanBan':
-        //handleChiTietVanBan(item);
-        //setEditVanBan(true);
-        break;
-      case 'XoaVanBan':
-        //handleXoaVanBan(item);
+      case 'delete':
+        var res = await requestDELETE(`api/v1/placetypes/${item.id}`);
+        if (res) {
+          toast.success('Thao tác thành công!');
+          dispatch(actionsModal.setRandom());
+        } else {
+          toast.error('Thất bại, vui lòng thử lại!');
+        }
         break;
 
       default:
@@ -113,16 +114,18 @@ const UsersList = () => {
               <i className='fa fa-eye'></i>
             </a>
 
-            <a
-              className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1 mb-1'
-              data-toggle='m-tooltip'
-              title='Xoá'
-              onClick={() => {
-                handleButton(`xoa`, record);
+            <Popconfirm
+              title='Xoá?'
+              onConfirm={() => {
+                handleButton(`delete`, record);
               }}
+              okText='Xoá'
+              cancelText='Huỷ'
             >
-              <i className='fa fa-trash'></i>
-            </a>
+              <a className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1 mb-1' data-toggle='m-tooltip' title='Xoá'>
+                <i className='fa fa-trash'></i>
+              </a>
+            </Popconfirm>
           </div>
         );
       },

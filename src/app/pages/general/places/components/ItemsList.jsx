@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import _ from 'lodash';
+
 import {Popconfirm} from 'antd';
 import {toast} from 'react-toastify';
 
@@ -28,16 +29,16 @@ const UsersList = () => {
       try {
         setLoading(true);
         const res = await requestPOST(
-          `api/v1/areas/search`,
+          `api/v1/places/search`,
           _.assign(
             {
               advancedSearch: {
-                fields: ['name', 'code'],
+                fields: ['placeName', 'title', 'addressDetail'],
                 keyword: dataSearch?.keywordSearch ?? null,
               },
               pageNumber: offset,
               pageSize: size,
-              orderBy: ['level', 'code'],
+              orderBy: ['createdOn'],
             },
             dataSearch
           )
@@ -64,7 +65,7 @@ const UsersList = () => {
         break;
 
       case 'delete':
-        var res = await requestDELETE(`api/v1/areas/${item.id}`);
+        var res = await requestDELETE(`api/v1/places/${item.id}`);
         if (res) {
           toast.success('Thao tác thành công!');
           dispatch(actionsModal.setRandom());
@@ -81,23 +82,26 @@ const UsersList = () => {
   const columns = [
     {
       title: 'Tên',
-      dataIndex: 'nameWithType',
-      key: 'nameWithType',
+      dataIndex: 'placeName',
+      key: 'placeName',
     },
     {
-      title: 'Mã',
-      dataIndex: 'code',
-      key: 'code',
+      title: 'Tiêu đề',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
-      title: 'Loại',
-      dataIndex: 'level',
-      key: 'level',
+      title: 'Địa chỉ',
+      dataIndex: 'addressDetail',
+      key: 'addressDetail',
     },
     {
-      title: 'Mô tả',
-      dataIndex: 'description',
-      key: 'description',
+      width: '10%',
+      title: 'Loại địa điểm',
+      render: (text, record, index) => {
+        return <>{record?.placeType?.name ?? ''}</>;
+      },
+      key: 'isActive',
     },
     {
       title: 'Thao tác',

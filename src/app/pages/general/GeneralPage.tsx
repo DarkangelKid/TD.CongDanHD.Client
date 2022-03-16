@@ -3,6 +3,7 @@ import {Navigate, Route, Routes, Outlet} from 'react-router-dom';
 import CategoriesPage from './categories/CategoriesPage';
 import PlaceTypesPage from './placetypes/PlaceTypesPage';
 import AreasPage from './areas/AreasPage';
+import PlacesPage from './places/PlacesPage';
 
 const GeneralPage = () => {
   return (
@@ -21,6 +22,15 @@ const GeneralPage = () => {
           element={
             <>
               <PlaceTypesPage />
+            </>
+          }
+        />
+
+        <Route
+          path='places'
+          element={
+            <>
+              <PlacesPage />
             </>
           }
         />

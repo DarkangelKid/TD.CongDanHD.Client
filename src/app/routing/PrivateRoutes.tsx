@@ -16,6 +16,11 @@ const PrivateRoutes = () => {
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'));
 
   const GeneralPage = lazy(() => import('../pages/general/GeneralPage'));
+  const TrafficPage = lazy(() => import('../pages/traffic/TrafficPage'));
+  const BusinessPage = lazy(() => import('../pages/business/BusinessPage'));
+  const MarketPage = lazy(() => import('../pages/market/MarketPage'));
+  const HotlinePage = lazy(() => import('../pages/hotline/HotlinePage'));
+  const CompaniesPage = lazy(() => import('../pages/companies/CompaniesPage'));
 
   //const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'));
 
@@ -29,6 +34,7 @@ const PrivateRoutes = () => {
         <Route path='builder' element={<BuilderPageWrapper />} />
 
         <Route path='admin/users' element={<UsersPage />} />
+        <Route path='admin/business' element={<CompaniesPage />} />
 
         {/* Lazy Modules */}
 
@@ -41,6 +47,41 @@ const PrivateRoutes = () => {
           }
         />
 
+        <Route
+          path='traffic/*'
+          element={
+            <SuspensedView>
+              <TrafficPage />
+            </SuspensedView>
+          }
+        />
+
+        <Route
+          path='business/*'
+          element={
+            <SuspensedView>
+              <BusinessPage />
+            </SuspensedView>
+          }
+        />
+
+        <Route
+          path='market/*'
+          element={
+            <SuspensedView>
+              <MarketPage />
+            </SuspensedView>
+          }
+        />
+
+        <Route
+          path='hotline/*'
+          element={
+            <SuspensedView>
+              <HotlinePage />
+            </SuspensedView>
+          }
+        />
         <Route
           path='crafted/pages/profile/*'
           element={

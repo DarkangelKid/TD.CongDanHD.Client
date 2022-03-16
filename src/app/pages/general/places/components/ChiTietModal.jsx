@@ -1,46 +1,18 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {shallowEqual, useSelector, useDispatch} from 'react-redux';
 
-import {Form, Input, Select, Spin, notification, DatePicker} from 'antd';
+import {Form, Input, Select, Spin, InputNumber} from 'antd';
 import {Modal, Button} from 'react-bootstrap';
-import moment from 'moment';
 import {toast} from 'react-toastify';
 
 import * as actionsModal from 'src/setup/redux/modal/Actions';
-
 import {requestPOST, requestGET, requestPUT, API_URL, FILE_URL} from 'src/utils/baseAPI';
-import {handleImage} from 'src/utils/utils';
 import ImageUpload from 'src/app/components/ImageUpload';
+import {handleImage} from 'src/utils/utils';
 
 const FormItem = Form.Item;
 
-const initData = {
-  userName: 'aaaa',
-  fullName: '',
-  phoneNumber: null,
-  email: '',
-  gender: null,
-  dateOfBirth: null,
-  isActive: true,
-  isVerified: false,
-  emailConfirmed: true,
-  phoneNumberConfirmed: true,
-  imageUrl: null,
-  identityNumber: null,
-  identityPlace: null,
-  identityDate: null,
-  placeOfOrigin: null,
-  placeOfDestination: null,
-  nationality: null,
-  provinceId: null,
-  districtId: null,
-  communeId: null,
-  address: null,
-  province: null,
-  district: null,
-  commune: null,
-};
-
+const {TextArea} = Input;
 const {Option} = Select;
 
 const ModalItem = (props) => {
@@ -48,17 +20,12 @@ const ModalItem = (props) => {
   const token = useSelector((state) => state.auth.accessToken);
   const dataModal = useSelector((state) => state.modal.dataModal);
   const modalVisible = useSelector((state) => state.modal.modalVisible);
-  const id = dataModal?.userName ?? null;
+  const id = dataModal?.id ?? null;
 
   const [form] = Form.useForm();
 
-  const genders = [
-    {id: 'Nam', name: 'Nam'},
-    {id: 'Nữ', name: 'Nữ'},
-    {id: 'Khác', name: 'Khác'},
-  ];
-
   const [loadding, setLoadding] = useState(false);
+  const [lstPlaceType, setLstPlaceType] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [communes, setCommunes] = useState([]);
@@ -66,23 +33,19 @@ const ModalItem = (props) => {
   const [provinceId, setProvinceId] = useState(null);
   const [districtId, setDistrictId] = useState(null);
   const [image, setImage] = useState([]);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoadding(true);
-      const res = await requestGET(`api/users/${id}`);
+      const res = await requestGET(`api/v1/places/${id}`);
 
-      if (res) {
-        console.log('vaoday');
-        console.log(res);
-
-        form.setFieldsValue(res);
-        setProvinceId(res?.provinceId ?? null);
-        setDistrictId(res?.districtId ?? null);
-        setImage(handleImage(res?.imageUrl ?? '', FILE_URL));
-        if (res.dateOfBirth) {
-          form.setFieldsValue({dateOfBirth: moment(res.dateOfBirth)});
-        }
+      if (res && res.data) {
+        form.setFieldsValue(res.data);
+        setProvinceId(res.data?.provinceId ?? null);
+        setDistrictId(res.data?.districtId ?? null);
+        setImage(handleImage(res.data?.image ?? '', FILE_URL));
+        setImages(handleImage(res.data?.images ?? '', FILE_URL));
         console.log(form.getFieldsValue(true));
       }
       setLoadding(false);
@@ -93,6 +56,19 @@ const ModalItem = (props) => {
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await requestPOST(`api/v1/placetypes/search`, {
+        pageNumber: 1,
+        pageSize: 1000,
+        orderBy: ['name'],
+      });
+      if (res && res.data) setLstPlaceType(res.data);
+    };
+    fetchData();
+    return () => {};
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -153,23 +129,43 @@ const ModalItem = (props) => {
     const values = await form.validateFields();
 
     try {
+      let arrImage = [];
+      image.forEach((i) => {
+        if (i.response) {
+          arrImage.push(i.response.data[0].url);
+        } else {
+          arrImage.push(i.path);
+        }
+      });
+
+      let arrImages = [];
+      images.forEach((i) => {
+        if (i.response) {
+          arrImages.push(i.response.data[0].url);
+        } else {
+          arrImages.push(i.path);
+        }
+      });
+
+      form.setFieldsValue({image: arrImage.join('##')});
+      form.setFieldsValue({images: arrImages.join('##')});
+
       const formData = form.getFieldsValue(true);
       if (id) {
         formData.id = id;
       }
 
-      if (image.length > 0) {
-        formData.imageUrl = image[0]?.response?.data[0]?.url ?? image[0].path;
+      /*       if (image.length > 0) {
+        formData.image = image[0]?.response?.data[0]?.url ?? image[0].path;
       } else {
-        formData.imageUrl = null;
+        formData.image = null;
       }
+ */
 
-      const res = id ? await requestPUT(`api/users/${id}`, formData) : await requestPOST(`api/users`, formData);
-      console.log(res);
+      const res = id ? await requestPUT(`api/v1/places/${id}`, formData) : await requestPOST(`api/v1/places`, formData);
       if (res) {
         toast.success('Cập nhật thành công!');
-        // form.resetFields();
-        props.setUpdate(!props.update);
+        dispatch(actionsModal.setRandom());
         handleCancel();
       } else {
         toast.error('Thất bại, vui lòng thử lại!');
@@ -190,61 +186,65 @@ const ModalItem = (props) => {
       onEscapeKeyDown={handleCancel}
     >
       <Modal.Header className='bg-primary px-4 py-3'>
-        <Modal.Title className='text-white'>Chi tiết người dùng</Modal.Title>
+        <Modal.Title className='text-white'>Chi tiết</Modal.Title>
         <button type='button' className='btn-close btn-close-white' aria-label='Close' onClick={handleCancel}></button>
       </Modal.Header>
       <Modal.Body>
         <Spin spinning={loadding}>
           {!loadding && (
             <Form form={form} layout='vertical' /* initialValues={initData} */ autoComplete='off'>
-              <div className='row '>
-                <div className='col col-xl-4'>
-                  <FormItem label='Ảnh đại diện'>
-                    <ImageUpload
-                      URL={`${API_URL}/api/v1/attachments`}
-                      fileList={image}
-                      onChange={(e) => setImage(e.fileList)}
-                      headers={{
-                        Authorization: `Bearer ${token}`,
-                      }}
-                    />
-                  </FormItem>
-                </div>
-                <div className='col col-xl-8'>
-                  <div className='row'>
-                    <div className='col-xl-12'>
-                      <FormItem label='Tên đăng nhập' name='userName' rules={[{required: true, message: 'Không được để trống!'}]}>
-                        <Input placeholder='Tên đăng nhập' disabled={id ? true : false} />
-                      </FormItem>
-                    </div>
-                    <div className='col-xl-12'>
-                      <FormItem label='Họ và tên' name='fullName' rules={[{required: true, message: 'Không được để trống!'}]}>
-                        <Input placeholder='Họ và tên' />
-                      </FormItem>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div className='row'>
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Số điện thoại' name='phoneNumber' rules={[{required: true, message: 'Không được để trống!'}]}>
-                    <Input placeholder='' disabled={id ? true : false} />
+                  <FormItem label='Tên địa điểm' name='placeName' rules={[{required: true, message: 'Không được để trống!'}]}>
+                    <Input placeholder='' />
                   </FormItem>
                 </div>
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Email' name='email' rules={[{required: true, message: 'Không được để trống!'}]}>
-                    <Input placeholder='' disabled={id ? true : false} />
+                  <FormItem label='Tiêu đề' name='title'>
+                    <Input placeholder='' />
                   </FormItem>
                 </div>
 
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Giới tính' name='gender'>
+                  <FormItem label='Địa chỉ' name='addressDetail'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Nguồn' name='source'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Số điện thoại' name='phoneContact'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Website' name='website'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Email' name='email'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
+                <div className='col-xl-12 col-lg-12'>
+                  <FormItem label='Giới thiệu' name='content'>
+                    <TextArea rows={4} placeholder='' />
+                  </FormItem>
+                </div>
+
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Loại địa điểm' name='placeTypeId'>
                     <Select
+                      allowClear
                       showSearch
-                      placeholder='Giới tính'
+                      placeholder='Loại địa điểm'
                       filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     >
-                      {genders.map((item) => {
+                      {lstPlaceType.map((item) => {
                         return (
                           <Option key={item.id} value={item.id}>
                             {item.name}
@@ -254,28 +254,17 @@ const ModalItem = (props) => {
                     </Select>
                   </FormItem>
                 </div>
-                <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Ngày sinh' name='dateOfBirth'>
-                    <DatePicker format='DD/MM/YYYY' style={{width: '100%'}} />
-                  </FormItem>
-                </div>
 
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Số giấy tờ' name='identityNumber'>
-                    <Input placeholder='' />
+                  <FormItem label='Kinh độ' name='latitude'>
+                    <InputNumber placeholder='' style={{width: '100%'}} />
                   </FormItem>
                 </div>
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Ngày cấp' name='identityDateOfIssue'>
-                    <DatePicker format='DD/MM/YYYY' style={{width: '100%'}} />
+                  <FormItem label='Vĩ độ' name='longitude'>
+                    <InputNumber placeholder='' style={{width: '100%'}} />
                   </FormItem>
                 </div>
-                <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Nơi cấp' name='identityPlace'>
-                    <Input placeholder='' />
-                  </FormItem>
-                </div>
-
                 <div className='col-xl-4 col-lg-6'>
                   <FormItem label='Tỉnh/Thành phố' name='provinceId'>
                     <Select
@@ -332,9 +321,33 @@ const ModalItem = (props) => {
                     </Select>
                   </FormItem>
                 </div>
-                <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Thôn/Xóm/Số nhà' name='address'>
-                    <Input placeholder='Địa chỉ' />
+              </div>
+              <div className='row '>
+                <div className='col col-xl-12'>
+                  <FormItem label='Ảnh đại diện'>
+                    <ImageUpload
+                      URL={`${API_URL}/api/v1/attachments`}
+                      fileList={image}
+                      onChange={(e) => setImage(e.fileList)}
+                      headers={{
+                        Authorization: `Bearer ${token}`,
+                      }}
+                    />
+                  </FormItem>
+                </div>
+              </div>
+              <div className='row '>
+                <div className='col col-xl-12'>
+                  <FormItem label='Bộ sưu tập'>
+                    <ImageUpload
+                      multiple
+                      URL={`${API_URL}/api/v1/attachments`}
+                      fileList={images}
+                      onChange={(e) => setImages(e.fileList)}
+                      headers={{
+                        Authorization: `Bearer ${token}`,
+                      }}
+                    />
                   </FormItem>
                 </div>
               </div>

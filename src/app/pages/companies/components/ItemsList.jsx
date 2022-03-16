@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import _ from 'lodash';
+
 import {Popconfirm} from 'antd';
 import {toast} from 'react-toastify';
 
@@ -28,16 +29,16 @@ const UsersList = () => {
       try {
         setLoading(true);
         const res = await requestPOST(
-          `api/v1/areas/search`,
+          `api/v1/companies/search`,
           _.assign(
             {
               advancedSearch: {
-                fields: ['name', 'code'],
+                fields: ['name'],
                 keyword: dataSearch?.keywordSearch ?? null,
               },
               pageNumber: offset,
               pageSize: size,
-              orderBy: ['level', 'code'],
+              orderBy: ['createdOn'],
             },
             dataSearch
           )
@@ -64,7 +65,7 @@ const UsersList = () => {
         break;
 
       case 'delete':
-        var res = await requestDELETE(`api/v1/areas/${item.id}`);
+        var res = await requestDELETE(`api/v1/companies/${item.id}`);
         if (res) {
           toast.success('Thao tác thành công!');
           dispatch(actionsModal.setRandom());
@@ -81,23 +82,26 @@ const UsersList = () => {
   const columns = [
     {
       title: 'Tên',
-      dataIndex: 'nameWithType',
-      key: 'nameWithType',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      title: 'Mã',
-      dataIndex: 'code',
-      key: 'code',
+      title: 'Số điện thoại',
+      dataIndex: 'phoneNumber',
+      key: 'phoneNumber',
     },
     {
-      title: 'Loại',
-      dataIndex: 'level',
-      key: 'level',
+      title: 'Địa chỉ',
+      dataIndex: 'address',
+      key: 'address',
     },
     {
-      title: 'Mô tả',
-      dataIndex: 'description',
-      key: 'description',
+      width: '10%',
+      title: 'Quy mô',
+      render: (text, record, index) => {
+        return <>{record?.companySize ?? ''}</>;
+      },
+      key: 'companySize',
     },
     {
       title: 'Thao tác',

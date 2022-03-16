@@ -28,7 +28,7 @@ const UsersList = () => {
       try {
         setLoading(true);
         const res = await requestPOST(
-          `api/v1/areas/search`,
+          `api/v1/benefits/search`,
           _.assign(
             {
               advancedSearch: {
@@ -37,7 +37,7 @@ const UsersList = () => {
               },
               pageNumber: offset,
               pageSize: size,
-              orderBy: ['level', 'code'],
+              orderBy: ['name'],
             },
             dataSearch
           )
@@ -64,13 +64,16 @@ const UsersList = () => {
         break;
 
       case 'delete':
-        var res = await requestDELETE(`api/v1/areas/${item.id}`);
+        var res = await requestDELETE(`api/v1/benefits/${item.id}`);
         if (res) {
           toast.success('Thao tác thành công!');
           dispatch(actionsModal.setRandom());
         } else {
           toast.error('Thất bại, vui lòng thử lại!');
         }
+        break;
+      case 'XoaVanBan':
+        //handleXoaVanBan(item);
         break;
 
       default:
@@ -81,8 +84,8 @@ const UsersList = () => {
   const columns = [
     {
       title: 'Tên',
-      dataIndex: 'nameWithType',
-      key: 'nameWithType',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: 'Mã',
@@ -90,10 +93,18 @@ const UsersList = () => {
       key: 'code',
     },
     {
-      title: 'Loại',
-      dataIndex: 'level',
-      key: 'level',
+      title: 'Icon',
+      dataIndex: 'icon',
+      key: 'icon',
+      render: (text, record) => {
+        return (
+          <>
+            <i className={`fa fa-${record?.icon ?? ''} fs-3 text-primary`}></i>
+          </>
+        );
+      },
     },
+
     {
       title: 'Mô tả',
       dataIndex: 'description',

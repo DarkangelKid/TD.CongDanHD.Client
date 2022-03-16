@@ -4,9 +4,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import _ from 'lodash';
 import {Popconfirm} from 'antd';
 import {toast} from 'react-toastify';
-
+import clsx from 'clsx';
 import * as actionsModal from 'src/setup/redux/modal/Actions';
 import {requestPOST, requestDELETE} from 'src/utils/baseAPI';
+import {toAbsoluteUrl} from 'src/utils/AssetHelpers';
 
 import TableList from 'src/app/components/TableList';
 import ModalItem from './ChiTietModal';
@@ -28,7 +29,7 @@ const UsersList = () => {
       try {
         setLoading(true);
         const res = await requestPOST(
-          `api/v1/areas/search`,
+          `api/v1/hotlines/search`,
           _.assign(
             {
               advancedSearch: {
@@ -37,7 +38,7 @@ const UsersList = () => {
               },
               pageNumber: offset,
               pageSize: size,
-              orderBy: ['level', 'code'],
+              orderBy: ['name'],
             },
             dataSearch
           )
@@ -64,13 +65,16 @@ const UsersList = () => {
         break;
 
       case 'delete':
-        var res = await requestDELETE(`api/v1/areas/${item.id}`);
+        var res = await requestDELETE(`api/v1/hotlines/${item.id}`);
         if (res) {
           toast.success('Thao tác thành công!');
           dispatch(actionsModal.setRandom());
         } else {
           toast.error('Thất bại, vui lòng thử lại!');
         }
+        break;
+      case 'XoaVanBan':
+        //handleXoaVanBan(item);
         break;
 
       default:
@@ -80,24 +84,53 @@ const UsersList = () => {
 
   const columns = [
     {
+      title: 'Ảnh',
+      width: '10%',
+      dataIndex: 'image',
+      key: 'image',
+      render: (text, record, index) => {
+        return (
+          <>
+            <div className='d-flex align-items-center'>
+              {/* begin:: Avatar */}
+              <div className='symbol overflow-hidden me-3'>
+                <div>
+                  {record.image ? (
+                    <img
+                      src={record.image.includes('https://') || record.image.includes('http://') ? record.image : toAbsoluteUrl(`/${record.image}`)}
+                      alt={record.name}
+                      className='w-100 symbol-label'
+                    />
+                  ) : (
+                    <div
+                      className={clsx(
+                        'symbol-label fs-3',
+                        `bg-light-${record.isVerified ? 'danger' : ''}`,
+                        `text-${record.isVerified ? 'danger' : ''}`
+                      )}
+                    ></div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      },
+    },
+    {
       title: 'Tên',
-      dataIndex: 'nameWithType',
-      key: 'nameWithType',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      title: 'Mã',
-      dataIndex: 'code',
-      key: 'code',
+      title: 'Địa chỉ',
+      dataIndex: 'address',
+      key: 'address',
     },
     {
-      title: 'Loại',
-      dataIndex: 'level',
-      key: 'level',
-    },
-    {
-      title: 'Mô tả',
-      dataIndex: 'description',
-      key: 'description',
+      title: 'Số điện thoại',
+      dataIndex: 'phone',
+      key: 'phone',
     },
     {
       title: 'Thao tác',
