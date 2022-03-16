@@ -9,11 +9,20 @@ import JobNamesPage from './jobnames/JobNamesPage';
 import JobPositionsPage from './jobpositions/JobPositionsPage';
 import JobTypesPage from './jobtypes/JobTypesPage';
 import SalariesPage from './salaries/SalariesPage';
+import RecruitmentsPage from './recruitments/RecruitmentsPage';
 
 const GeneralPage = () => {
   return (
     <Routes>
       <Route element={<Outlet />}>
+        <Route
+          path='recruitments'
+          element={
+            <>
+              <RecruitmentsPage />
+            </>
+          }
+        />
         <Route
           path='benefits'
           element={
