@@ -10,6 +10,10 @@ export const setModalVisible = (data) => (dispatch) => {
   dispatch(actions.setModalVisible(data));
 };
 
+export const setModalDanhSachChuyenDiVisible = (data) => (dispatch) => {
+  dispatch(actions.setModalDanhSachChuyenDiVisible(data));
+};
+
 export const setDataSearch = (data) => (dispatch) => {
   dispatch(actions.setDataSearch(data));
 };

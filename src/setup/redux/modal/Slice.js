@@ -3,6 +3,8 @@ const initialState = {
   random: null,
   dataModal: null,
   modalVisible: false,
+  modalDanhSachChuyenDiVisible: false,
+
   dataSearch: null,
 
   listLoading: false,
@@ -46,6 +48,15 @@ export const modalSlice = createSlice({
         state.dataModal = null;
       }
     },
+
+    setModalDanhSachChuyenDiVisible: (state, action) => {
+      const payload = action.payload;
+      state.modalDanhSachChuyenDiVisible = payload;
+      if (!state.modalDanhSachChuyenDiVisible) {
+        state.dataModal = null;
+      }
+    },
+
     setDataSearch: (state, action) => {
       const payload = action.payload;
       state.dataSearch = payload;

@@ -20,7 +20,7 @@ const PlacesPage = () => {
   return (
     <>
       <div className='card card-xl-stretch mb-xl-9'>
-        <PageHeader title='Doanh nghiệp' />
+        <PageHeader title='Danh sách phương tiện' />
         <ItemsList />
       </div>
     </>

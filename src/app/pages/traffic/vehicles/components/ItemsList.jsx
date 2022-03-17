@@ -2,19 +2,24 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import _ from 'lodash';
+import clsx from 'clsx';
 
 import {Popconfirm} from 'antd';
 import {toast} from 'react-toastify';
 
 import * as actionsModal from 'src/setup/redux/modal/Actions';
 import {requestPOST, requestDELETE} from 'src/utils/baseAPI';
+import {toAbsoluteUrl} from 'src/utils/AssetHelpers';
 
 import TableList from 'src/app/components/TableList';
 import ModalItem from './ChiTietModal';
+import DanhSachChuyenDiModal from './DanhSachChuyenDiModal';
 
 const UsersList = () => {
   const dispatch = useDispatch();
   const modalVisible = useSelector((state) => state.modal.modalVisible);
+  const modalDanhSachChuyenDiVisible = useSelector((state) => state.modal.modalDanhSachChuyenDiVisible);
+
   const dataSearch = useSelector((state) => state.modal.dataSearch);
   const random = useSelector((state) => state.modal.random);
 
@@ -29,7 +34,7 @@ const UsersList = () => {
       try {
         setLoading(true);
         const res = await requestPOST(
-          `api/v1/companies/search`,
+          `api/v1/vehicles/search`,
           _.assign(
             {
               advancedSearch: {
@@ -64,6 +69,11 @@ const UsersList = () => {
 
         break;
 
+      case 'chuyen-xe':
+        dispatch(actionsModal.setDataModal(item));
+        dispatch(actionsModal.setModalDanhSachChuyenDiVisible(true));
+        break;
+
       case 'delete':
         var res = await requestDELETE(`api/v1/companies/${item.id}`);
         if (res) {
@@ -81,33 +91,63 @@ const UsersList = () => {
 
   const columns = [
     {
-      title: 'Tên',
+      title: 'Ảnh',
+      width: '10%',
+      dataIndex: 'image',
+      key: 'image',
+      render: (text, record, index) => {
+        return (
+          <>
+            <div className='d-flex align-items-center'>
+              {/* begin:: Avatar */}
+              <div className='symbol overflow-hidden me-3'>
+                <div>
+                  {record.image ? (
+                    <img
+                      src={record.image.includes('https://') || record.image.includes('http://') ? record.image : toAbsoluteUrl(`/${record.image}`)}
+                      alt={record.name}
+                      className='w-100 symbol-label'
+                    />
+                  ) : (
+                    <div
+                      className={clsx(
+                        'symbol-label fs-3',
+                        `bg-light-${record.isVerified ? 'danger' : ''}`,
+                        `text-${record.isVerified ? 'danger' : ''}`
+                      )}
+                    ></div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      title: 'Tên xe',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: 'Số điện thoại',
-      dataIndex: 'phoneNumber',
-      key: 'phoneNumber',
-    },
-    {
-      title: 'Địa chỉ',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      width: '10%',
-      title: 'Quy mô',
+      title: 'Công ty',
       render: (text, record, index) => {
-        return <>{record?.companySize ?? ''}</>;
+        return <>{record?.company?.name ?? ''}</>;
       },
-      key: 'companySize',
+      key: 'company',
     },
+
+    {
+      title: 'Mô tả',
+      dataIndex: 'description',
+      key: 'description',
+    },
+
     {
       title: 'Thao tác',
       dataIndex: '',
       key: '',
-      width: '10%',
+      width: '15%',
       render: (text, record) => {
         return (
           <div>
@@ -120,6 +160,16 @@ const UsersList = () => {
               }}
             >
               <i className='fa fa-eye'></i>
+            </a>
+            <a
+              className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 mb-1'
+              data-toggle='m-tooltip'
+              title='Danh sách chuyến xe'
+              onClick={() => {
+                handleButton(`chuyen-xe`, record);
+              }}
+            >
+              <i className='fa fa-car'></i>
             </a>
 
             <Popconfirm
@@ -156,6 +206,7 @@ const UsersList = () => {
         </div>
       </div>
       {modalVisible ? <ModalItem /> : <></>}
+      {modalDanhSachChuyenDiVisible ? <DanhSachChuyenDiModal /> : <></>}
     </>
   );
 };

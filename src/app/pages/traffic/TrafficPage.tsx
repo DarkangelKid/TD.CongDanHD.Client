@@ -14,7 +14,7 @@ const GeneralPage = () => {
           path='vehicles'
           element={
             <>
-              <CarpoolsPage />
+              <VehiclesPage />
             </>
           }
         />
