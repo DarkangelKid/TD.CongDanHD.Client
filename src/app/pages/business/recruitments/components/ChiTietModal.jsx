@@ -621,22 +621,22 @@ const ModalItem = (props) => {
                   Liên hệ
                 </Divider>
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Tên người liên hệ' name='contactName' rules={[{required: true, message: 'Không được để trống!'}]}>
+                  <FormItem label='Tên người liên hệ' name='contactName'>
                     <Input placeholder='' />
                   </FormItem>
                 </div>
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Email liên hệ' name='contactEmail' rules={[{required: true, message: 'Không được để trống!'}]}>
+                  <FormItem label='Email liên hệ' name='contactEmail'>
                     <Input placeholder='' />
                   </FormItem>
                 </div>
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='SĐT liên hệ' name='contactPhone' rules={[{required: true, message: 'Không được để trống!'}]}>
+                  <FormItem label='SĐT liên hệ' name='contactPhone'>
                     <Input placeholder='' />
                   </FormItem>
                 </div>
                 <div className='col-xl-4 col-lg-6'>
-                  <FormItem label='Địa chỉ liên hệ' name='contactAdress' rules={[{required: true, message: 'Không được để trống!'}]}>
+                  <FormItem label='Địa chỉ liên hệ' name='contactAdress'>
                     <Input placeholder='' />
                   </FormItem>
                 </div>

@@ -11,7 +11,16 @@ const {Option} = Select;
 const PageHeader = (props) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const [placetypes, setPlaceTypes] = useState([]);
+  const [lstCompanies, setLstCompanies] = useState([]);
+  const [lstJobNames, setLstJobNames] = useState([]);
+  const [lstJobPositions, setLstJobPositions] = useState([]);
+  const [lstJobTypes, setLstJobTypes] = useState([]);
+  const [lstSalaries, setLstSalaries] = useState([]);
+  const [lstExperiences, setLstExperiences] = useState([]);
+  const [lstJobAges, setLstJobAges] = useState([]);
+  const [lstDegrees, setLstDegrees] = useState([]);
+  const [lstBenefits, setLstBenefits] = useState([]);
+
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [communes, setCommunes] = useState([]);
@@ -26,12 +35,115 @@ const PageHeader = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await requestPOST(`api/v1/placetypes/search`, {
+      const res = await requestPOST(`api/v1/companies/search`, {
         pageNumber: 1,
-        pageSize: 1000,
+        pageSize: 10000,
         orderBy: ['name'],
       });
-      if (res && res.data) setPlaceTypes(res.data);
+      if (res && res.data) setLstCompanies(res.data);
+    };
+    fetchData();
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await requestPOST(`api/v1/jobnames/search`, {
+        pageNumber: 1,
+        pageSize: 10000,
+        orderBy: ['name'],
+      });
+      if (res && res.data) setLstJobNames(res.data);
+    };
+    fetchData();
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await requestPOST(`api/v1/jobtypes/search`, {
+        pageNumber: 1,
+        pageSize: 10000,
+        orderBy: ['name'],
+      });
+      if (res && res.data) setLstJobTypes(res.data);
+    };
+    fetchData();
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await requestPOST(`api/v1/jobpositions/search`, {
+        pageNumber: 1,
+        pageSize: 10000,
+        orderBy: ['name'],
+      });
+      if (res && res.data) setLstJobPositions(res.data);
+    };
+    fetchData();
+    return () => {};
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await requestPOST(`api/v1/salaries/search`, {
+        pageNumber: 1,
+        pageSize: 10000,
+        orderBy: ['name'],
+      });
+      if (res && res.data) setLstSalaries(res.data);
+    };
+    fetchData();
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await requestPOST(`api/v1/benefits/search`, {
+        pageNumber: 1,
+        pageSize: 10000,
+        orderBy: ['name'],
+      });
+      if (res && res.data) setLstBenefits(res.data);
+    };
+    fetchData();
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await requestPOST(`api/v1/experiences/search`, {
+        pageNumber: 1,
+        pageSize: 10000,
+        orderBy: ['name'],
+      });
+      if (res && res.data) setLstExperiences(res.data);
+    };
+    fetchData();
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await requestPOST(`api/v1/jobages/search`, {
+        pageNumber: 1,
+        pageSize: 10000,
+        orderBy: ['name'],
+      });
+      if (res && res.data) setLstJobAges(res.data);
+    };
+    fetchData();
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await requestPOST(`api/v1/degrees/search`, {
+        pageNumber: 1,
+        pageSize: 10000,
+        orderBy: ['name'],
+      });
+      if (res && res.data) setLstDegrees(res.data);
     };
     fetchData();
     return () => {};
@@ -133,9 +245,141 @@ const PageHeader = (props) => {
                   </FormItem>
                 </div>
                 <div className='col-xl-6 col-lg-6'>
-                  <FormItem label='Loại địa điểm' name='placeTypeIds'>
-                    <Select allowClear placeholder='Loại địa điểm'>
-                      {placetypes.map((item) => {
+                  <FormItem label='Công ty' name='companyId'>
+                    <Select
+                      allowClear
+                      showSearch
+                      placeholder='Công ty'
+                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {lstCompanies.map((item) => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Nghề nghiệp' name='jobNameId'>
+                    <Select
+                      allowClear
+                      showSearch
+                      placeholder='Nghề nghiệp'
+                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {lstJobNames.map((item) => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Vị trí' name='jobPositionId'>
+                    <Select
+                      allowClear
+                      showSearch
+                      placeholder='Vị trí'
+                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {lstJobPositions.map((item) => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Loại hình công việc' name='jobTypeId'>
+                    <Select
+                      allowClear
+                      showSearch
+                      placeholder='Loại hình công việc'
+                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {lstJobTypes.map((item) => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Mức lương' name='salaryId'>
+                    <Select
+                      allowClear
+                      showSearch
+                      placeholder='Mức lương'
+                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {lstSalaries.map((item) => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Độ tuổi' name='jobAgeId'>
+                    <Select
+                      allowClear
+                      showSearch
+                      placeholder='Độ tuổi'
+                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {lstJobAges.map((item) => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </FormItem>
+                </div>
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Bằng cấp' name='degreeId'>
+                    <Select
+                      allowClear
+                      showSearch
+                      placeholder='Bằng cấp'
+                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {lstDegrees.map((item) => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </FormItem>
+                </div>
+
+                <div className='col-xl-4 col-lg-6'>
+                  <FormItem label='Kinh nghiệm làm việc' name='experienceId'>
+                    <Select
+                      allowClear
+                      showSearch
+                      placeholder='Kinh nghiệm làm việc'
+                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {lstExperiences.map((item) => {
                         return (
                           <Option key={item.id} value={item.id}>
                             {item.name}
