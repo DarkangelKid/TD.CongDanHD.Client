@@ -25,3 +25,15 @@ export const resetData = () => (dispatch) => {
 export const setRandom = () => (dispatch) => {
   dispatch(actions.setRandom());
 };
+
+export const setDataTripModal = (data) => (dispatch) => {
+  dispatch(actions.setDataTripModal(data));
+};
+
+export const setDataDanhSachChuyenDiSearch = (data) => (dispatch) => {
+  dispatch(actions.setDataDanhSachChuyenDiSearch(data));
+};
+
+export const setModalTripVisible = (data) => (dispatch) => {
+  dispatch(actions.setModalTripVisible(data));
+};

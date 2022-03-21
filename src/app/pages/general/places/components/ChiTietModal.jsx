@@ -46,7 +46,6 @@ const ModalItem = (props) => {
         setDistrictId(res.data?.districtId ?? null);
         setImage(handleImage(res.data?.image ?? '', FILE_URL));
         setImages(handleImage(res.data?.images ?? '', FILE_URL));
-        console.log(form.getFieldsValue(true));
       }
       setLoadding(false);
     };

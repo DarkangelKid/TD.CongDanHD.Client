@@ -3,9 +3,13 @@ const initialState = {
   random: null,
   dataModal: null,
   modalVisible: false,
-  modalDanhSachChuyenDiVisible: false,
-
   dataSearch: null,
+
+  modalDanhSachChuyenDiVisible: false,
+  dataDanhSachChuyenDiSearch: null,
+
+  dataTripModal: null,
+  modalTripVisible: false,
 
   listLoading: false,
   actionsLoading: false,
@@ -41,6 +45,12 @@ export const modalSlice = createSlice({
       const payload = action.payload;
       state.dataModal = payload;
     },
+
+    setDataTripModal: (state, action) => {
+      const payload = action.payload;
+      state.dataTripModal = payload;
+    },
+
     setModalVisible: (state, action) => {
       const payload = action.payload;
       state.modalVisible = payload;
@@ -49,10 +59,19 @@ export const modalSlice = createSlice({
       }
     },
 
+    setModalTripVisible: (state, action) => {
+      const payload = action.payload;
+      state.modalTripVisible = payload;
+      if (!state.modalTripVisible) {
+        state.dataTripModal = null;
+      }
+    },
+
     setModalDanhSachChuyenDiVisible: (state, action) => {
       const payload = action.payload;
       state.modalDanhSachChuyenDiVisible = payload;
       if (!state.modalDanhSachChuyenDiVisible) {
+        state.dataTripModal = null;
         state.dataModal = null;
       }
     },
@@ -60,6 +79,10 @@ export const modalSlice = createSlice({
     setDataSearch: (state, action) => {
       const payload = action.payload;
       state.dataSearch = payload;
+    },
+    setDataDanhSachChuyenDiSearch: (state, action) => {
+      const payload = action.payload;
+      state.dataDanhSachChuyenDiSearch = payload;
     },
     resetData: (state, action) => {
       state = initialState;

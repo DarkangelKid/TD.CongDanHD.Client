@@ -2,10 +2,9 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import _ from 'lodash';
-import clsx from 'clsx';
-
 import {Popconfirm} from 'antd';
 import {toast} from 'react-toastify';
+import clsx from 'clsx';
 
 import * as actionsModal from 'src/setup/redux/modal/Actions';
 import {requestPOST, requestDELETE} from 'src/utils/baseAPI';
@@ -13,13 +12,10 @@ import {toAbsoluteUrl} from 'src/utils/AssetHelpers';
 
 import TableList from 'src/app/components/TableList';
 import ModalItem from './ChiTietModal';
-import DanhSachChuyenDiModal from './DanhSachChuyenDiModal';
 
 const UsersList = () => {
   const dispatch = useDispatch();
   const modalVisible = useSelector((state) => state.modal.modalVisible);
-  const modalDanhSachChuyenDiVisible = useSelector((state) => state.modal.modalDanhSachChuyenDiVisible);
-
   const dataSearch = useSelector((state) => state.modal.dataSearch);
   const random = useSelector((state) => state.modal.random);
 
@@ -34,16 +30,16 @@ const UsersList = () => {
       try {
         setLoading(true);
         const res = await requestPOST(
-          `api/v1/vehicles/search`,
+          `api/v1/ecommercecategories/search`,
           _.assign(
             {
               advancedSearch: {
-                fields: ['name'],
+                fields: ['name', 'code'],
                 keyword: dataSearch?.keywordSearch ?? null,
               },
               pageNumber: offset,
               pageSize: size,
-              orderBy: ['createdOn'],
+              orderBy: ['name'],
             },
             dataSearch
           )
@@ -69,19 +65,17 @@ const UsersList = () => {
 
         break;
 
-      case 'chuyen-xe':
-        dispatch(actionsModal.setDataModal(item));
-        dispatch(actionsModal.setModalDanhSachChuyenDiVisible(true));
-        break;
-
       case 'delete':
-        var res = await requestDELETE(`api/v1/vehicles/${item.id}`);
+        var res = await requestDELETE(`api/v1/ecommercecategories/${item.id}`);
         if (res) {
           toast.success('Thao tác thành công!');
           dispatch(actionsModal.setRandom());
         } else {
           toast.error('Thất bại, vui lòng thử lại!');
         }
+        break;
+      case 'XoaVanBan':
+        //handleXoaVanBan(item);
         break;
 
       default:
@@ -125,16 +119,14 @@ const UsersList = () => {
       },
     },
     {
-      title: 'Tên xe',
+      title: 'Tên',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: 'Công ty',
-      render: (text, record, index) => {
-        return <>{record?.company?.name ?? ''}</>;
-      },
-      key: 'company',
+      title: 'Mã',
+      dataIndex: 'code',
+      key: 'code',
     },
 
     {
@@ -142,12 +134,11 @@ const UsersList = () => {
       dataIndex: 'description',
       key: 'description',
     },
-
     {
       title: 'Thao tác',
       dataIndex: '',
       key: '',
-      width: '15%',
+      width: '10%',
       render: (text, record) => {
         return (
           <div>
@@ -160,16 +151,6 @@ const UsersList = () => {
               }}
             >
               <i className='fa fa-eye'></i>
-            </a>
-            <a
-              className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 mb-1'
-              data-toggle='m-tooltip'
-              title='Danh sách chuyến xe'
-              onClick={() => {
-                handleButton(`chuyen-xe`, record);
-              }}
-            >
-              <i className='fa fa-car'></i>
             </a>
 
             <Popconfirm
@@ -206,7 +187,6 @@ const UsersList = () => {
         </div>
       </div>
       {modalVisible ? <ModalItem /> : <></>}
-      {modalDanhSachChuyenDiVisible ? <DanhSachChuyenDiModal /> : <></>}
     </>
   );
 };
