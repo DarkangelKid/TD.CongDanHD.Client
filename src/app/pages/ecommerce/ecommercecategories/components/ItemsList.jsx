@@ -12,11 +12,14 @@ import {toAbsoluteUrl} from 'src/utils/AssetHelpers';
 
 import TableList from 'src/app/components/TableList';
 import ModalItem from './ChiTietModal';
+import CategoryAttributesModal from './CategoryAttributesModal';
 
 const UsersList = () => {
   const dispatch = useDispatch();
   const modalVisible = useSelector((state) => state.modal.modalVisible);
   const dataSearch = useSelector((state) => state.modal.dataSearch);
+  const modalCategoryAttributeVisible = useSelector((state) => state.modal.modalCategoryAttributeVisible);
+
   const random = useSelector((state) => state.modal.random);
 
   const [dataTable, setDataTable] = useState([]);
@@ -64,7 +67,10 @@ const UsersList = () => {
         dispatch(actionsModal.setModalVisible(true));
 
         break;
-
+      case 'attribute-values':
+        dispatch(actionsModal.setDataModal(item));
+        dispatch(actionsModal.setModalCategoryAttributeVisible(true));
+        break;
       case 'delete':
         var res = await requestDELETE(`api/v1/ecommercecategories/${item.id}`);
         if (res) {
@@ -152,7 +158,16 @@ const UsersList = () => {
             >
               <i className='fa fa-eye'></i>
             </a>
-
+            <a
+              className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 mb-1'
+              data-toggle='m-tooltip'
+              title='Danh sách thuộc tính'
+              onClick={() => {
+                handleButton(`attribute-values`, record);
+              }}
+            >
+              <i className='fa fa-cogs'></i>
+            </a>
             <Popconfirm
               title='Xoá?'
               onConfirm={() => {
@@ -187,6 +202,7 @@ const UsersList = () => {
         </div>
       </div>
       {modalVisible ? <ModalItem /> : <></>}
+      {modalCategoryAttributeVisible ? <CategoryAttributesModal /> : <></>}
     </>
   );
 };

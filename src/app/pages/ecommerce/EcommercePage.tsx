@@ -2,6 +2,7 @@ import {Navigate, Route, Routes, Outlet} from 'react-router-dom';
 
 import EcommerceCategoriesPage from './ecommercecategories/EcommerceCategoriesPage';
 import BrandsPage from './brands/BrandsPage';
+import AttributesPage from './attributes/AttributesPage';
 
 const GeneralPage = () => {
   return (
@@ -20,6 +21,14 @@ const GeneralPage = () => {
           element={
             <>
               <BrandsPage />
+            </>
+          }
+        />
+        <Route
+          path='attributes'
+          element={
+            <>
+              <AttributesPage />
             </>
           }
         />

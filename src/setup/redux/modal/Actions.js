@@ -37,3 +37,7 @@ export const setDataDanhSachChuyenDiSearch = (data) => (dispatch) => {
 export const setModalTripVisible = (data) => (dispatch) => {
   dispatch(actions.setModalTripVisible(data));
 };
+
+export const setModalCategoryAttributeVisible = (data) => (dispatch) => {
+  dispatch(actions.setModalCategoryAttributeVisible(data));
+};

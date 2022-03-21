@@ -11,6 +11,8 @@ const initialState = {
   dataTripModal: null,
   modalTripVisible: false,
 
+  modalCategoryAttributeVisible: false,
+
   listLoading: false,
   actionsLoading: false,
   error: null,
@@ -64,6 +66,14 @@ export const modalSlice = createSlice({
       state.modalTripVisible = payload;
       if (!state.modalTripVisible) {
         state.dataTripModal = null;
+      }
+    },
+
+    setModalCategoryAttributeVisible: (state, action) => {
+      const payload = action.payload;
+      state.modalCategoryAttributeVisible = payload;
+      if (!state.modalCategoryAttributeVisible) {
+        state.dataModal = null;
       }
     },
 
