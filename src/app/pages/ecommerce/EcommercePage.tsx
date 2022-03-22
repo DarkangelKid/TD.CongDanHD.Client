@@ -3,6 +3,7 @@ import {Navigate, Route, Routes, Outlet} from 'react-router-dom';
 import EcommerceCategoriesPage from './ecommercecategories/EcommerceCategoriesPage';
 import BrandsPage from './brands/BrandsPage';
 import AttributesPage from './attributes/AttributesPage';
+import SellersPage from './sellers/SellersPage';
 
 const GeneralPage = () => {
   return (
@@ -13,6 +14,14 @@ const GeneralPage = () => {
           element={
             <>
               <EcommerceCategoriesPage />
+            </>
+          }
+        />
+        <Route
+          path='sellers'
+          element={
+            <>
+              <SellersPage />
             </>
           }
         />
