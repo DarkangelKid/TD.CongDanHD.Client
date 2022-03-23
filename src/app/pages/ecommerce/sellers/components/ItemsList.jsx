@@ -120,7 +120,7 @@ const UsersList = () => {
       },
     },
     {
-      title: 'Tên',
+      title: 'Tên sản phẩm',
       dataIndex: 'name',
       key: 'name',
     },
@@ -129,11 +129,15 @@ const UsersList = () => {
       dataIndex: 'code',
       key: 'code',
     },
-
     {
-      title: 'Mô tả',
-      dataIndex: 'description',
-      key: 'description',
+      title: 'Số lượng',
+      dataIndex: 'quantity',
+      key: 'quantity',
+    },
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+      key: 'price',
     },
     {
       title: 'Thao tác',

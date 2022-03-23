@@ -10,10 +10,13 @@ import {requestPOST, requestDELETE} from 'src/utils/baseAPI';
 
 import TableList from 'src/app/components/TableList';
 import ModalItem from './ChiTietModal';
+import AreaInfoModal from './AreaInfoModal';
 
 const UsersList = () => {
   const dispatch = useDispatch();
   const modalVisible = useSelector((state) => state.modal.modalVisible);
+  const modalAreaInfoVisible = useSelector((state) => state.modal.modalAreaInfoVisible);
+
   const dataSearch = useSelector((state) => state.modal.dataSearch);
   const random = useSelector((state) => state.modal.random);
 
@@ -62,7 +65,10 @@ const UsersList = () => {
         dispatch(actionsModal.setModalVisible(true));
 
         break;
-
+      case 'thong-tin':
+        dispatch(actionsModal.setDataModal(item));
+        dispatch(actionsModal.setModalAreaInfoVisible(true));
+        break;
       case 'delete':
         var res = await requestDELETE(`api/v1/areas/${item.id}`);
         if (res) {
@@ -117,7 +123,16 @@ const UsersList = () => {
             >
               <i className='fa fa-eye'></i>
             </a>
-
+            <a
+              className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 mb-1'
+              data-toggle='m-tooltip'
+              title='Thông tin chi tiết'
+              onClick={() => {
+                handleButton(`thong-tin`, record);
+              }}
+            >
+              <i className='fa fa-cogs'></i>
+            </a>
             <Popconfirm
               title='Xoá?'
               onConfirm={() => {
@@ -152,6 +167,7 @@ const UsersList = () => {
         </div>
       </div>
       {modalVisible ? <ModalItem /> : <></>}
+      {modalAreaInfoVisible ? <AreaInfoModal /> : <></>}Î
     </>
   );
 };

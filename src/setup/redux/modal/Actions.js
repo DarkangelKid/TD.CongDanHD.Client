@@ -41,3 +41,7 @@ export const setModalTripVisible = (data) => (dispatch) => {
 export const setModalCategoryAttributeVisible = (data) => (dispatch) => {
   dispatch(actions.setModalCategoryAttributeVisible(data));
 };
+
+export const setModalAreaInfoVisible = (data) => (dispatch) => {
+  dispatch(actions.setModalAreaInfoVisible(data));
+};
