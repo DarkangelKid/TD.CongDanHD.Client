@@ -69,6 +69,7 @@ export function AsideMenuMain() {
       <AsideMenuItemWithSub to='/admin' title='Quản trị công dân' icon='/media/icons/duotune/communication/com006.svg' fontIcon='bi-person'>
         <AsideMenuItem to='/admin/users' title='Công dân' hasBullet={true} />
         <AsideMenuItem to='/admin/business' title='Doanh nghiệp' hasBullet={true} />
+        <AsideMenuItem to='/admin/roles' title='Vai trò' hasBullet={true} />
       </AsideMenuItemWithSub>
 
       <AsideMenuItemWithSub to='/system' title='Quản trị hệ thống' icon='/media/icons/duotune/coding/cod009.svg' fontIcon='bi-person'>

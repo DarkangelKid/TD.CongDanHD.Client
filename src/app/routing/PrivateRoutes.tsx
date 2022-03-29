@@ -6,6 +6,7 @@ import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper';
 import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils';
 
 import UsersPage from '../pages/users/UsersPage';
+import RolesPage from '../pages/roles/RolesPage';
 
 const PrivateRoutes = () => {
   const BuilderPageWrapper = lazy(() => import('../pages/layout-builder/BuilderPageWrapper'));
@@ -36,6 +37,7 @@ const PrivateRoutes = () => {
 
         <Route path='admin/users' element={<UsersPage />} />
         <Route path='admin/business' element={<CompaniesPage />} />
+        <Route path='admin/roles' element={<RolesPage />} />
 
         {/* Lazy Modules */}
 
