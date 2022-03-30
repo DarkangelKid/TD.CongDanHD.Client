@@ -63,7 +63,6 @@ const ModalItem = (props) => {
           pageNumber: 1,
           pageSize: 1000,
           orderBy: ['position'],
-          vehicleId: id,
         });
 
         if (res && res.data) setAttributes(res.data);
