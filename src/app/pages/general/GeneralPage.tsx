@@ -4,11 +4,20 @@ import CategoriesPage from './categories/CategoriesPage';
 import PlaceTypesPage from './placetypes/PlaceTypesPage';
 import AreasPage from './areas/AreasPage';
 import PlacesPage from './places/PlacesPage';
+import HomePageInforsPage from './homepageinfors/HomePageInforsPage';
 
 const GeneralPage = () => {
   return (
     <Routes>
       <Route element={<Outlet />}>
+        <Route
+          path='homepageinfors'
+          element={
+            <>
+              <HomePageInforsPage />
+            </>
+          }
+        />
         <Route
           path='categories'
           element={

@@ -23,6 +23,7 @@ export function AsideMenuMain() {
         <AsideMenuItem to='/general/areas' title='Địa bàn' hasBullet={true} />
         <AsideMenuItem to='/general/placetypes' title='Loại địa điểm' hasBullet={true} />
         <AsideMenuItem to='/general/places' title='Địa điểm' hasBullet={true} />
+        <AsideMenuItem to='/general/homepageinfors' title='Ảnh trang chủ' hasBullet={true} />
       </AsideMenuItemWithSub>
 
       <AsideMenuItemWithSub to='/traffic' title='Giao thông' icon='/media/icons/duotune/ecommerce/ecm006.svg' fontIcon='bi-person'>
