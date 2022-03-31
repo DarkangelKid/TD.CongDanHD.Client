@@ -67,9 +67,15 @@ export function AsideMenuMain() {
         <AsideMenuItem to='/hotline/hotlines' title='Danh sách tổng đài' hasBullet={true} />
       </AsideMenuItemWithSub>
 
+      <AsideMenuItemWithSub to='/alert' title='Thông tin cảnh báo' icon='/media/icons/duotune/electronics/elc002.svg' fontIcon='bi-person'>
+        <AsideMenuItem to='/alert/alertcategories' title='Danh mục cảnh báo' hasBullet={true} />
+        <AsideMenuItem to='/alert/alertorganizations' title='Đơn vị cảnh báo' hasBullet={true} />
+        <AsideMenuItem to='/alert/alertinformations' title='Thông tin cảnh báo' hasBullet={true} />
+      </AsideMenuItemWithSub>
+
       <AsideMenuItemWithSub to='/admin' title='Quản trị công dân' icon='/media/icons/duotune/communication/com006.svg' fontIcon='bi-person'>
         <AsideMenuItem to='/admin/users' title='Công dân' hasBullet={true} />
-        <AsideMenuItem to='/admin/business' title='Doanh nghiệp' hasBullet={true} />
+        <AsideMenuItem to='/admin/companies' title='Doanh nghiệp' hasBullet={true} />
         <AsideMenuItem to='/admin/roles' title='Vai trò' hasBullet={true} />
       </AsideMenuItemWithSub>
 

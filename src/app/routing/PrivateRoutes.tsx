@@ -23,6 +23,7 @@ const PrivateRoutes = () => {
   const HotlinePage = lazy(() => import('../pages/hotline/HotlinePage'));
   const CompaniesPage = lazy(() => import('../pages/companies/CompaniesPage'));
   const EcommercePage = lazy(() => import('../pages/ecommerce/EcommercePage'));
+  const AlertPage = lazy(() => import('../pages/alert/AlertPage'));
 
   //const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'));
 
@@ -36,7 +37,7 @@ const PrivateRoutes = () => {
         <Route path='builder' element={<BuilderPageWrapper />} />
 
         <Route path='admin/users' element={<UsersPage />} />
-        <Route path='admin/business' element={<CompaniesPage />} />
+        <Route path='admin/companies' element={<CompaniesPage />} />
         <Route path='admin/roles' element={<RolesPage />} />
 
         {/* Lazy Modules */}
@@ -46,6 +47,15 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <GeneralPage />
+            </SuspensedView>
+          }
+        />
+
+        <Route
+          path='alert/*'
+          element={
+            <SuspensedView>
+              <AlertPage />
             </SuspensedView>
           }
         />
