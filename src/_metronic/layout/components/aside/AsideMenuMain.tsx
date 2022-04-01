@@ -48,6 +48,16 @@ export function AsideMenuMain() {
         <AsideMenuItem to='/business/jobapplications' title='Danh sách CV' hasBullet={true} />
       </AsideMenuItemWithSub>
 
+      <AsideMenuItemWithSub to='/enterprise' title='Doanh nghiệp - Nhà đầu tư' icon='/media/icons/duotune/finance/fin006.svg' fontIcon='bi-person'>
+        <AsideMenuItem to='/enterprise/enterpriseforumcategories' title='Danh mục diễn đàn đầu tư' hasBullet={true} />
+        <AsideMenuItem to='/enterprise/projectinvestcategories' title='Danh mục dự án đầu tư' hasBullet={true} />
+        <AsideMenuItem to='/enterprise/projectinvestforms' title='Danh mục hình thức đầu tư' hasBullet={true} />
+        <AsideMenuItem to='/enterprise/lawdatas' title='Cơ sở dữ liệu luật' hasBullet={true} />
+        <AsideMenuItem to='/enterprise/labormarketinformations' title='Thông tin thị trường lao động' hasBullet={true} />
+        <AsideMenuItem to='/enterprise/enterpriseforumtopics' title='Diễn đàn đầu tư' hasBullet={true} />
+        <AsideMenuItem to='/enterprise/projectinvestinformations' title='Dự án kêu gọi đầu tư' hasBullet={true} />
+      </AsideMenuItemWithSub>
+
       <AsideMenuItemWithSub to='/ecommerce' title='Cung cầu' icon='/media/icons/duotune/ecommerce/ecm001.svg' fontIcon='bi-person'>
         <AsideMenuItem to='/ecommerce/ecommercecategories' title='Danh mục sản phẩm' hasBullet={true} />
         <AsideMenuItem to='/ecommerce/brands' title='Thương hiệu' hasBullet={true} />

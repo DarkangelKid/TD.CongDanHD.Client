@@ -24,6 +24,7 @@ const PrivateRoutes = () => {
   const CompaniesPage = lazy(() => import('../pages/companies/CompaniesPage'));
   const EcommercePage = lazy(() => import('../pages/ecommerce/EcommercePage'));
   const AlertPage = lazy(() => import('../pages/alert/AlertPage'));
+  const EnterprisePage = lazy(() => import('../pages/enterprise/EnterprisePage'));
 
   //const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'));
 
@@ -51,6 +52,14 @@ const PrivateRoutes = () => {
           }
         />
 
+        <Route
+          path='enterprise/*'
+          element={
+            <SuspensedView>
+              <EnterprisePage />
+            </SuspensedView>
+          }
+        />
         <Route
           path='alert/*'
           element={
