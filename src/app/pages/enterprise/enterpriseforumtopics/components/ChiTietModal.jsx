@@ -50,7 +50,7 @@ const ModalItem = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await requestPOST(`api/v1/projectinvestcategories/search`, {
+      const res = await requestPOST(`api/v1/enterpriseforumcategories/search`, {
         pageNumber: 1,
         pageSize: 1000,
         orderBy: ['name'],
@@ -120,12 +120,12 @@ const ModalItem = (props) => {
             <Form form={form} layout='vertical' /* initialValues={initData} */ autoComplete='off'>
               <div className='row'>
                 <div className='col-xl-6 col-lg-6'>
-                  <FormItem label='Tiêu đề' name='name' rules={[{required: true, message: 'Không được để trống!'}]}>
+                  <FormItem label='Tiêu đề' name='title' rules={[{required: true, message: 'Không được để trống!'}]}>
                     <Input placeholder='' />
                   </FormItem>
                 </div>
                 <div className='col-xl-6 col-lg-6'>
-                  <FormItem label='Lĩnh vực' name='projectInvestCategoryId'>
+                  <FormItem label='Lĩnh vực' name='enterpriseForumCategoryId'>
                     <Select
                       showSearch
                       placeholder='Danh mục'
