@@ -160,6 +160,11 @@ const ModalItem = (props) => {
                     <Input placeholder='' />
                   </FormItem>
                 </div>
+                <div className='col-xl-6 col-lg-6'>
+                  <FormItem label='Cơ quan ban hành' name='agencyIssued'>
+                    <Input placeholder='' />
+                  </FormItem>
+                </div>
                 <div className='col-xl-4 col-lg-6'>
                   <FormItem label='Ngày ban hành' name='dateIssued'>
                     <DatePicker format={'DD/MM/YYYY'} placeholder='Ngày ban hành' style={{width: '100%'}} />
