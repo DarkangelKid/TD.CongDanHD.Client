@@ -278,7 +278,16 @@ const ModalItem = (props) => {
                         Authorization: `Bearer ${token}`,
                       }}
                       fileList={file}
-                      onChange={(e) => setFile(e.fileList)}
+                      onChange={(e) => {
+                        console.log(e?.file?.status ?? 'khongco');
+                        console.log('----');
+                        console.log(e.status);
+                        setFile(e.fileList);
+                        console.log(e?.file?.response ?? null);
+                        /* if ((e?.file?.status ?? null) === 'done') {
+                          setFile(e.fileList);
+                        } */
+                      }}
                     />
                   </Form.Item>
                 </div>

@@ -1,5 +1,7 @@
 import {FC, useRef, useEffect, useState} from 'react';
 import {shallowEqual, useSelector, connect, useDispatch, ConnectedProps} from 'react-redux';
+import {HubConnectionBuilder} from '@microsoft/signalr';
+
 import {LayoutSplashScreen} from '../../../../_metronic/layout/core';
 import * as auth from './AuthRedux';
 import {getUserByToken, getCurrentPermissions} from './AuthCRUD';
@@ -14,6 +16,8 @@ const AuthInit: FC<PropsFromRedux> = (props) => {
   const dispatch = useDispatch();
   const [showSplashScreen, setShowSplashScreen] = useState(true);
   const accessToken = useSelector<RootState>(({auth}) => auth.accessToken, shallowEqual);
+
+  const [connection, setConnection] = useState<any>(null);
 
   // We should request user by authToken before rendering the application
   useEffect(() => {
@@ -45,6 +49,38 @@ const AuthInit: FC<PropsFromRedux> = (props) => {
     }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    console.log('cccccccccccccccc');
+    const newConnection = new HubConnectionBuilder()
+      .withUrl('https://192.168.2.167:5001/notifications', {
+        headers: {tenant: 'root', Authorization: `Bearer ${accessToken}`},
+        accessTokenFactory: () => `${accessToken}`,
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    console.log('notificationsnotificationsnotificationsnotifications');
+    console.log(newConnection);
+
+    setConnection(newConnection);
+  }, []);
+
+  useEffect(() => {
+    if (connection) {
+      connection
+        .start()
+        .then((result: any) => {
+          console.log('Connected!');
+
+          connection.on('NotificationFromServer', (message: any) => {
+            console.log('ReceiveMessageReceiveMessageReceiveMessage')
+            console.log(message);
+          });
+        })
+        .catch((e: any) => console.log('Connection failed: ', e));
+    }
+  }, [connection]);
 
   return showSplashScreen ? <LayoutSplashScreen /> : <>{props.children}</>;
 };
