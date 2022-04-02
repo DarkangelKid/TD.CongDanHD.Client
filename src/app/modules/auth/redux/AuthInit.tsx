@@ -73,9 +73,10 @@ const AuthInit: FC<PropsFromRedux> = (props) => {
         .then((result: any) => {
           console.log('Connected!');
 
-          connection.on('NotificationFromServer', (message: any) => {
-            console.log('ReceiveMessageReceiveMessageReceiveMessage')
+          connection.on('NotificationFromServer', (message: any, message2: any) => {
+            console.log('ReceiveMessageReceiveMessageReceiveMessage');
             console.log(message);
+            console.log(message2);
           });
         })
         .catch((e: any) => console.log('Connection failed: ', e));

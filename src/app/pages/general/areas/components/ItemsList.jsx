@@ -167,7 +167,7 @@ const UsersList = () => {
         </div>
       </div>
       {modalVisible ? <ModalItem /> : <></>}
-      {modalAreaInfoVisible ? <AreaInfoModal /> : <></>}Î
+      {modalAreaInfoVisible ? <AreaInfoModal /> : <></>}
     </>
   );
 };
