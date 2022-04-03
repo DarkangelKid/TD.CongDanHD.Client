@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {shallowEqual, useSelector, useDispatch} from 'react-redux';
 import {Form, Input} from 'antd';
+import {HubConnectionBuilder, LogLevel} from '@microsoft/signalr';
 
 import * as actionsModal from 'src/setup/redux/modal/Actions';
 
@@ -9,6 +10,18 @@ const FormItem = Form.Item;
 const PageHeader = (props) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  const connection = useSelector((state) => state.global.connection);
+  const accessToken = useSelector((state) => state.auth.accessToken);
+
+  const sendMessage = async () => {
+    if (connection) {
+      console.log('vaodayyy');
+      // await connection.send('SendMessage', '123');
+      connection.invoke('SendMessage', 'root.admin', 'message').catch(function (err) {
+        return console.error(err.toString());
+      });
+    }
+  };
 
   useEffect(() => {
     form.resetFields();
@@ -16,9 +29,10 @@ const PageHeader = (props) => {
     return () => {};
   }, []);
 
-  const TimKiem = () => {
+  const TimKiem = async () => {
     const formData = form.getFieldsValue(true);
     dispatch(actionsModal.setDataSearch(formData));
+    await sendMessage();
   };
 
   return (

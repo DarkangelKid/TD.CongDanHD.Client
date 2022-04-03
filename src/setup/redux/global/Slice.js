@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   random: null,
-
+  connection: null,
   listLoading: false,
   actionsLoading: false,
   error: null,
@@ -34,6 +34,9 @@ export const globalSlice = createSlice({
 
     setRandom: (state, action) => {
       state.random = Math.random().toString(32);
+    },
+    setConnection: (state, action) => {
+      state.connection = action.payload;
     },
   },
 });
