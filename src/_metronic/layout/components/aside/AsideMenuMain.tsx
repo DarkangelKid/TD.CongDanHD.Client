@@ -83,6 +83,15 @@ export function AsideMenuMain() {
         <AsideMenuItem to='/alert/alertinformations' title='Thông tin cảnh báo' hasBullet={true} />
       </AsideMenuItemWithSub>
 
+      <AsideMenuItemWithSub to='/education' title='Giáo dục' icon='/media/icons/duotune/electronics/elc002.svg' fontIcon='bi-person'>
+        <AsideMenuItem to='/education/schools' title='Danh sách trường học' hasBullet={true} />
+      </AsideMenuItemWithSub>
+
+      <AsideMenuItemWithSub to='/agriculture' title='Nông nghiệp' icon='/media/icons/duotune/electronics/elc002.svg' fontIcon='bi-person'>
+        <AsideMenuItem to='/agriculture/agriculturalengineeringcategories' title='Danh mục kỹ thuật nông nghiệp' hasBullet={true} />
+        <AsideMenuItem to='/agriculture/agriculturalengineerings' title='Kỹ thuật nông nghiệp' hasBullet={true} />
+      </AsideMenuItemWithSub>
+
       <AsideMenuItemWithSub to='/admin' title='Quản trị công dân' icon='/media/icons/duotune/communication/com006.svg' fontIcon='bi-person'>
         <AsideMenuItem to='/admin/users' title='Công dân' hasBullet={true} />
         <AsideMenuItem to='/admin/companies' title='Doanh nghiệp' hasBullet={true} />

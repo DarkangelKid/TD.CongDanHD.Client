@@ -10,8 +10,8 @@ export const setRandom = () => (dispatch) => {
 export const listenNotifications = (accessToken) => async (dispatch) => {
   console.log('listenNotifications');
   const connection = new HubConnectionBuilder()
-    //.withUrl(`${process.env.REACT_APP_API_URL}/notifications`, {
-    .withUrl(`https://192.168.2.167:5001/notifications`, {
+    .withUrl(`${process.env.REACT_APP_API_URL}/notifications`, {
+    //.withUrl(`https://192.168.2.167:5001/notifications`, {
       headers: {tenant: 'root'},
       accessTokenFactory: () => `${accessToken}`,
     })
@@ -29,7 +29,7 @@ export const listenNotifications = (accessToken) => async (dispatch) => {
   dispatch(actions.setConnection(connection));
   if (connection) {
     connection.start().then((e) => {
-      console.log('Connected123123!');
+      console.log('SocketConnected!');
       connection.on('NotificationFromServer', (message, message2) => {
         console.log('NotificationFromServerNotificationFromServer');
         console.log(message);
