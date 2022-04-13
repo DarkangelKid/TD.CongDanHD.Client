@@ -77,17 +77,21 @@ export function AsideMenuMain() {
         <AsideMenuItem to='/hotline/hotlines' title='Danh sách tổng đài' hasBullet={true} />
       </AsideMenuItemWithSub>
 
-      <AsideMenuItemWithSub to='/alert' title='Thông tin cảnh báo' icon='/media/icons/duotune/electronics/elc002.svg' fontIcon='bi-person'>
+      <AsideMenuItemWithSub to='/alert' title='Thông tin cảnh báo' icon='/media/icons/duotune/general/gen007.svg' fontIcon='bi-person'>
         <AsideMenuItem to='/alert/alertcategories' title='Danh mục cảnh báo' hasBullet={true} />
         <AsideMenuItem to='/alert/alertorganizations' title='Đơn vị cảnh báo' hasBullet={true} />
         <AsideMenuItem to='/alert/alertinformations' title='Thông tin cảnh báo' hasBullet={true} />
       </AsideMenuItemWithSub>
 
-      <AsideMenuItemWithSub to='/education' title='Giáo dục' icon='/media/icons/duotune/electronics/elc002.svg' fontIcon='bi-person'>
+      <AsideMenuItemWithSub to='/education' title='Giáo dục' icon='/media/icons/duotune/social/soc003.svg' fontIcon='bi-person'>
         <AsideMenuItem to='/education/schools' title='Danh sách trường học' hasBullet={true} />
       </AsideMenuItemWithSub>
 
-      <AsideMenuItemWithSub to='/agriculture' title='Nông nghiệp' icon='/media/icons/duotune/electronics/elc002.svg' fontIcon='bi-person'>
+      <AsideMenuItemWithSub to='/medical' title='Y tế' icon='/media/icons/duotune/medicine/med001.svg' fontIcon='bi-person'>
+        <AsideMenuItem to='/medical/medicalhotlines' title='Danh bạ khẩn cấp' hasBullet={true} />
+      </AsideMenuItemWithSub>
+
+      <AsideMenuItemWithSub to='/agriculture' title='Nông nghiệp' icon='/media/icons/duotune/abstract/abs047.svg' fontIcon='bi-person'>
         <AsideMenuItem to='/agriculture/agriculturalengineeringcategories' title='Danh mục kỹ thuật nông nghiệp' hasBullet={true} />
         <AsideMenuItem to='/agriculture/agriculturalengineerings' title='Kỹ thuật nông nghiệp' hasBullet={true} />
       </AsideMenuItemWithSub>
