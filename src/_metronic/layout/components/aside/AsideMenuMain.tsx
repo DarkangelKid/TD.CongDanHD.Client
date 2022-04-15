@@ -16,7 +16,7 @@ export function AsideMenuMain() {
         title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
         fontIcon='bi-app-indicator'
       />
-      <AsideMenuItem to='/builder' icon='/media/icons/duotune/general/gen019.svg' title='Layout Builder' fontIcon='bi-layers' />
+      {/* <AsideMenuItem to='/builder' icon='/media/icons/duotune/general/gen019.svg' title='Layout Builder' fontIcon='bi-layers' /> */}
 
       <AsideMenuItemWithSub to='/general' title='Danh mục chung' icon='/media/icons/duotune/communication/com006.svg' fontIcon='bi-person'>
         <AsideMenuItem to='/general/categories' title='Lĩnh vực' hasBullet={true} />
@@ -87,8 +87,14 @@ export function AsideMenuMain() {
         <AsideMenuItem to='/education/schools' title='Danh sách trường học' hasBullet={true} />
       </AsideMenuItemWithSub>
 
+      <AsideMenuItemWithSub to='/travel' title='Du lịch' icon='/media/icons/duotune/social/soc003.svg' fontIcon='bi-person'>
+        <AsideMenuItem to='/travel/tourguides' title='Hướng dẫn viên du lịch' hasBullet={true} />
+        <AsideMenuItem to='/travel/travelhandbooks' title='Cẩm nang du lịch' hasBullet={true} />
+      </AsideMenuItemWithSub>
+
       <AsideMenuItemWithSub to='/medical' title='Y tế' icon='/media/icons/duotune/medicine/med001.svg' fontIcon='bi-person'>
         <AsideMenuItem to='/medical/medicalhotlines' title='Danh bạ khẩn cấp' hasBullet={true} />
+        <AsideMenuItem to='/medical/diseases' title='Danh mục bệnh' hasBullet={true} />
       </AsideMenuItemWithSub>
 
       <AsideMenuItemWithSub to='/agriculture' title='Nông nghiệp' icon='/media/icons/duotune/abstract/abs047.svg' fontIcon='bi-person'>
@@ -108,14 +114,14 @@ export function AsideMenuMain() {
         <AsideMenuItem to='/system/sysconfigs' title='Cấu hình hệ thống' hasBullet={true} />
       </AsideMenuItemWithSub>
 
-      <div className='menu-item'>
+      {/*       <div className='menu-item'>
         <a target='_blank' className='menu-link' href={process.env.REACT_APP_PREVIEW_DOCS_URL + '/docs/changelog'}>
           <span className='menu-icon'>
             <KTSVG path='/media/icons/duotune/general/gen005.svg' className='svg-icon-2' />
           </span>
           <span className='menu-title'>Changelog {process.env.REACT_APP_VERSION}</span>
         </a>
-      </div>
+      </div> */}
     </>
   );
 }

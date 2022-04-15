@@ -1,29 +1,29 @@
 import {Navigate, Route, Routes, Outlet} from 'react-router-dom';
 
-import MedicalHotlinesPage from './medicalhotlines/MedicalHotlinesPage';
-import DiseasesPage from './diseases/DiseasesPage';
+import TourGuidesPage from './tourguides/TourGuidesPage';
+import TravelHandbooksPage from './travelhandbooks/TravelHandbooksPage';
 
 const GeneralPage = () => {
   return (
     <Routes>
       <Route element={<Outlet />}>
         <Route
-          path='medicalhotlines'
+          path='tourguides'
           element={
             <>
-              <MedicalHotlinesPage />
+              <TourGuidesPage />
             </>
           }
         />
         <Route
-          path='diseases'
+          path='travelhandbooks'
           element={
             <>
-              <DiseasesPage />
+              <TravelHandbooksPage />
             </>
           }
         />
-        <Route index element={<Navigate to='/medical/medicalhotlines' />} />
+        <Route index element={<Navigate to='/travel/tourguides' />} />
       </Route>
     </Routes>
   );
