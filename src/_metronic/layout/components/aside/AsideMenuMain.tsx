@@ -10,13 +10,20 @@ export function AsideMenuMain() {
 
   return (
     <>
-      <AsideMenuItem
+      {/* <AsideMenuItem
         to='/dashboard'
         icon='/media/icons/duotune/art/art002.svg'
         title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
         fontIcon='bi-app-indicator'
-      />
+      /> */}
       {/* <AsideMenuItem to='/builder' icon='/media/icons/duotune/general/gen019.svg' title='Layout Builder' fontIcon='bi-layers' /> */}
+
+      <AsideMenuItem
+        to='/general/seagames'
+        icon='/media/icons/duotune/art/art002.svg'
+        title='Thông tin SEA Games 31'
+        fontIcon='bi-app-indicator'
+      />
 
       <AsideMenuItemWithSub to='/general' title='Danh mục chung' icon='/media/icons/duotune/communication/com006.svg' fontIcon='bi-person'>
         <AsideMenuItem to='/general/categories' title='Lĩnh vực' hasBullet={true} />

@@ -50,7 +50,9 @@ const AppRoutes = () => {
           {isAuthorized ? (
             <>
               <Route path='/*' element={<PrivateRoutes />} />
-              <Route index element={<Navigate to='/dashboard' />} />
+              {/* <Route index element={<Navigate to='/dashboard' />} /> */}
+              <Route index element={<Navigate to='/general/seagames' />} />
+              
             </>
           ) : (
             <>
