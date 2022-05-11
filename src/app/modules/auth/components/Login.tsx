@@ -63,12 +63,12 @@ export function Login() {
     >
       {/* begin::Heading */}
       <div className='text-center mb-10'>
-        <div className='text-gray-400 fw-bold fs-4'>
+        {/* <div className='text-gray-400 fw-bold fs-4'>
           Bạn chưa có tài khoản?{' '}
           <Link to='/auth/registration' className='link-primary fw-bolder'>
             Đăng ký
           </Link>
-        </div>
+        </div> */}
       </div>
       {/* begin::Heading */}
 
@@ -112,13 +112,13 @@ export function Login() {
             <label className='form-label fw-bolder text-dark fs-6 mb-0'>Mật khẩu</label>
             {/* end::Label */}
             {/* begin::Link */}
-            <Link
+           {/*  <Link
               to='/auth/forgot-password'
               className='link-primary fs-6 fw-bolder'
               style={{marginLeft: '5px'}}
             >
               Quên mật khẩu ?
-            </Link>
+            </Link> */}
             {/* end::Link */}
           </div>
         </div>
