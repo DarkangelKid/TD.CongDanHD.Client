@@ -31,9 +31,11 @@ const AsideDefault: FC = () => {
             <img
               alt='Logo'
               className='h-25px logo'
-              src={toAbsoluteUrl('/media/logos/logo-1-dark.svg')}
+              src={toAbsoluteUrl('/media/logos/quochuy.png')}
             />
+            <span className="logo logo-title fs-6 ms-2 fw-bolder"> Quản trị công dân </span>
           </Link>
+
         )}
         {aside.theme === 'light' && (
           <Link to='/dashboard'>

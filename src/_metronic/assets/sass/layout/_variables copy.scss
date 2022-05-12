@@ -8,15 +8,15 @@ $root-font-size-lg:                             	14px; // Root font size for tab
 $root-font-size-md:                             	12px; // Root font size for mobile mode
 
 // Page bg
-$page-bg: 											if(isDarkMode(), #151521, #f9faff) !default;
+$page-bg: 											if(isDarkMode(), #151521, $gray-100) !default;
 
 // Content border radius
 $content-border-radius:								1.5rem !default;
 
 // Content Spacing
 $content-spacing: (
-	desktop: 30px, // Padding for desktop mode
-	tablet-and-mobile: 15px // Padding for tablet and mobile modes
+	desktop: 10px, // Padding for desktop mode
+	tablet-and-mobile: 5px // Padding for tablet and mobile modes
 ) !default;
 
 // Header
@@ -61,11 +61,10 @@ $aside-config: (
 	transition-speed: 0.3s, // transition speed
 	padding-x: 25px,
 	menu-indention: 0.75rem,
-	// bg-color: #1e1e2d,
-	bg-color: #ffffff,
-	logo-bg-color: darken(#ffffff, 2%),
-	scrollbar-color: if(isDarkMode(), $gray-200, #adb5bd),
-	scrollbar-hover-color: if(isDarkMode(), $gray-300, #adb5bd),
+	bg-color: #1e1e2d,
+	logo-bg-color: darken(#1e1e2d, 2%),
+	scrollbar-color: if(isDarkMode(), $gray-200, #3b3b64),
+	scrollbar-hover-color: if(isDarkMode(), $gray-300, lighten(#3b3b64, 3%)),
 	width: 265px, // Aside width for desktop mode
 	minimized-width: 75px,  // Aside minimized width for desktop mode
 	box-shadow: if(isDarkMode(), none, 0 0 28px 0 rgba(82,63,105,.05)), // Aside box shadow

@@ -20,12 +20,25 @@
         .menu-link {
             padding-top: 0.75rem;
             padding-bottom: 0.75rem;
+            /* border-radius: 0.5rem; */
         }
+
+        &.active, &:hover {
+            .menu-icon {
+              margin-left: 0.4rem;
+            }
+          }
+          .menu-title {
+              font-size: 16px;
+          }
 
         // Icon
         .menu-icon {
             justify-content: flex-start;
+            transition: all ease 0.3s;
         }
+
+        
     }
 }
 
@@ -40,15 +53,19 @@
     .menu {
         .menu-item {
             .menu-section {
-                color: #4c4e6f !important;
+                color: #FFFFFF !important;
             }
 
             //$title-color, $icon-color, $bullet-color, $arrow-color, $bg-color
-            @include menu-link-default-state( #9899ac, #494b74, #9899ac, #9899ac, null);
-            @include menu-link-hover-state( $white, $primary, $primary, $white, #1b1b28);
-            @include menu-link-here-state( $white, $primary, $primary, $white, #1b1b28);
-            @include menu-link-show-state( $white, $primary, $primary, $white, #1b1b28);
-            @include menu-link-active-state( $white, $primary, $primary, $white, #1b1b28);
+            @include menu-link-default-state( #3f4254, #494b74, blue, #9899ac, null);
+            @include menu-link-hover-state( $primary, $primary, $primary, #adb5bd, null);
+            @include menu-link-here-state( #3f4254, $primary, $primary, #adb5bd, #3bb77e33);
+            @include menu-link-show-state( #3f4254, $primary, $primary, #adb5bd, #3bb77e33);
+            @include menu-link-active-state( #3BB77E, $primary, $primary, #adb5bd, null); 
+            /* @include menu-link-default-state(#fff, #fff, #fff, #fff, null);
+            @include menu-link-hover-state($white, $primary, $primary, $white, #1b1b28);
+            @include menu-link-show-state($white, $primary, $primary, $white, #1b1b28); 
+            @include menu-link-active-state($primary, $primary, $primary, $primary, #fff);*/
         }
     }
 }
